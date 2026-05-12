@@ -9,8 +9,7 @@ function updateThumb() {
   const docHeight = document.documentElement.scrollHeight;
   const viewportHeight = window.innerHeight;
 
-  // Use the rendered track height so the thumb never overflows into nav/footer
-  const trackHeight = scrollbar.getBoundingClientRect().height;
+  const trackHeight = viewportHeight;
   const ratio = viewportHeight / docHeight;
   const thumbHeight = Math.max(ratio * trackHeight, 40);
 
