@@ -2,12 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Cupient</title>
+    <title>cupient</title>
     <link rel="stylesheet" href="styles.css">
   </head>
 
   <body>
+    <div class="scrollbar" aria-hidden="true">
+      <div class="scrollbar-track"></div>
+      <div class="scrollbar-thumb"></div>
+    </div>
+
     <nav>
+      <span class="logo">cupient</span>
       <ul>
         <li><a href="#about">About</a></li>
         <li><a href="#projects">Projects</a></li>
@@ -16,21 +22,81 @@
     </nav>
 
     <section id="hero">
-      <h1>Hi, I'm Cupient.</h1>
-      <p>I'm an IT student from CSU.</p>
-      <a href="#contact">Lets get in touch</a>
+      <h1>Hi, I'm <span>Andy</span>.</h1>
+      <p class="subtitle">A student from CSU, learning about computer systems.</p>
+      <a href="#contact">Let's get in touch</a>
     </section>
 
     <section id="about">
       <img src="photo.jpg" alt="A photo of me" />
-      <div>
+      <div class="about-text">
         <h2>About Me</h2>
-        <p>
-          I'm someone who loves to learn. 
-          I'm currently studying IT, and this is my little corner of the internet.
-        </p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempor volutpat odio, vitae cursus tortor condimentum accumsan. Maecenas ut orci nulla. Curabitur tincidunt varius velit in porttitor. Quisque molestie a tellus at tincidunt. Proin volutpat vel velit ac lobortis. Maecenas gravida enim vitae massa venenatis, in dapibus augue fringilla. Vestibulum id tempor dui. Nullam ullamcorper lacus eu sapien tempus, ac finibus lacus ultricies</p>
       </div>
     </section>
 
+    <section id="skills">
+      <h2>What I know</h2>
+      <div class="skills-grid">
+        <div class="skill-card">HTML</div>
+        <div class="skill-card">CSS</div>
+        <div class="skill-card">JavaScript</div>
+        <div class="skill-card">Lua</div>
+        <div class="skill-card">Python</div>
+        <div class="skill-card">C</div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>My Work</h2>
+      <div class="projects-grid">
+
+        <div class="project-card">
+          <div class="project-header">
+            <h3>Coming Soon.</h3>
+            <a href="#" target="_blank">↗</a>
+          </div>
+          <p>Someday, down the line.</p>
+          <div class="project-tags">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JS</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-header">
+            <h3>Coming Soon.</h3>
+            <a href="#" target="_blank">↗</a>
+          </div>
+          <p>Someday, down the line.</p>
+          <div class="project-tags">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JS</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Get In Touch</h2>
+      <p class="contact-sub">Whether it's a project, an opportunity, or just a hello.</p>
+      <a href="mailto:cupient@proton.com" class="contact-btn">Say Hello</a>
+
+      <div class="socials">
+        <a href="#">GitHub</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Twitter</a>
+      </div>
+    </section>
+
+    <footer>
+      <p>Designed & Built by <span>April Anderson P. Vismanos</span>.</p>
+    </footer>
+
+    <script defer src="fakescrollbar.js"></script>
+    <script defer src="scrollsnap.js"></script>
   </body>
 </html>
