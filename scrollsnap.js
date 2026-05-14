@@ -6,7 +6,9 @@
   if (isTouchDevice) return;
 
   function easeInOutCubic(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    return t < 0.5
+      ? 4 * t * t * t
+      : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
   let activeAnimation = null;
@@ -14,9 +16,10 @@
 
   function smoothScrollTo(target, duration = 750) {
     const start = window.scrollY;
-    const end = typeof target === "number"
-      ? target
-      : target.getBoundingClientRect().top + window.scrollY;
+    const end =
+      typeof target === "number"
+        ? target
+        : target.getBoundingClientRect().top + window.scrollY;
     const distance = end - start;
 
     if (Math.abs(distance) < 2) return Promise.resolve();
@@ -24,7 +27,7 @@
 
     isProgrammaticScroll = true;
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       let startTime = null;
 
       function step(ts) {
@@ -64,8 +67,7 @@
   window.addEventListener("wheel", cancelSnap, { passive: true });
   window.addEventListener("touchstart", cancelSnap, { passive: true });
 
-  // --- Anchor links ---
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", async function (e) {
       e.preventDefault();
       const target = document.querySelector(this.getAttribute("href"));
@@ -73,56 +75,51 @@
     });
   });
 
-  // --- Footer visibility ---
-  const footer = document.querySelector("footer");
-  const contact = document.querySelector("#contact");
-
-  if (footer && contact) {
-    new IntersectionObserver(([entry]) => {
-      footer.classList.toggle("visible", entry.isIntersecting);
-    }, { threshold: 1.0 }).observe(contact);
-  }
-
-  // --- Section snapping ---
   const sections = Array.from(document.querySelectorAll("section"));
 
   let lastScrollY = window.scrollY;
   let lastScrollEventTime = performance.now();
   let scrollDirection = "down";
 
-  window.addEventListener("scroll", () => {
-    if (isSnapping || isProgrammaticScroll) return;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (isSnapping || isProgrammaticScroll) return;
 
-    const now = performance.now();
-    const dy = window.scrollY - lastScrollY;
+      const now = performance.now();
+      const dy = window.scrollY - lastScrollY;
 
-    if (dy !== 0) scrollDirection = dy > 0 ? "down" : "up";
+      if (dy !== 0) scrollDirection = dy > 0 ? "down" : "up";
 
-    lastScrollY = window.scrollY;
-    lastScrollEventTime = now;
+      lastScrollY = window.scrollY;
+      lastScrollEventTime = now;
 
-    clearTimeout(snapTimer);
-    snapTimer = setTimeout(async () => {
-      if (performance.now() - lastScrollEventTime < 140) return;
-      if (isProgrammaticScroll) return;
+      clearTimeout(snapTimer);
+      snapTimer = setTimeout(async () => {
+        if (performance.now() - lastScrollEventTime < 140) return;
+        if (isProgrammaticScroll) return;
 
-      let target = null;
+        let target = null;
 
-      if (scrollDirection === "down") {
-        target = sections.find(sec => sec.getBoundingClientRect().top > 4);
-      } else {
-        const above = sections.filter(sec => sec.getBoundingClientRect().top < -4);
-        target = above[above.length - 1] ?? sections[0];
-      }
+        if (scrollDirection === "down") {
+          target = sections.find((sec) => sec.getBoundingClientRect().top > 4);
+        } else {
+          const above = sections.filter(
+            (sec) => sec.getBoundingClientRect().top < -4
+          );
+          target = above[above.length - 1] ?? sections[0];
+        }
 
-      if (!target) return;
+        if (!target) return;
 
-      const dist = Math.abs(target.getBoundingClientRect().top);
-      if (dist < 2) return;
+        const dist = Math.abs(target.getBoundingClientRect().top);
+        if (dist < 2) return;
 
-      isSnapping = true;
-      await smoothScrollTo(target, 550);
-      isSnapping = false;
-    }, 160);
-  }, { passive: true });
+        isSnapping = true;
+        await smoothScrollTo(target, 550);
+        isSnapping = false;
+      }, 160);
+    },
+    { passive: true }
+  );
 })();
