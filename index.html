@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>cupient</title>
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -14,7 +15,14 @@
 
     <nav>
       <span class="logo">cupient</span>
-      <ul>
+
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-menu">
         <li><a href="#about">About</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -97,6 +105,7 @@
     </footer>
 
     <script defer src="fakescrollbar.js"></script>
+    <script defer src="nav.js"></script>
     <script defer src="scrollsnap.js"></script>
   </body>
 </html>
