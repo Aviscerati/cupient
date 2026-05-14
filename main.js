@@ -1,4 +1,47 @@
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+
 (() => {
+  const toggle = document.querySelector('.nav-toggle');
+  const menu   = document.querySelector('.nav-menu');
+
+  if (!toggle || !menu) return;
+
+  function openMenu() {
+    menu.classList.add('open');
+    toggle.classList.add('active');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeMenu() {
+    menu.classList.remove('open');
+    toggle.classList.remove('active');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  toggle.addEventListener('click', () => {
+    menu.classList.contains('open') ? closeMenu() : openMenu();
+  });
+
+  // Close when a link is tapped
+  menu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeMenu);
+  });
+
+  // Close when tapping outside
+  document.addEventListener('click', e => {
+    if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+      closeMenu();
+    }
+  });
+})();
+
+/* ============================================================
+   SCROLLSNAP
+   ============================================================ */
+
+   (() => {
   const isTouchDevice =
     "ontouchstart" in window ||
     navigator.maxTouchPoints > 0;
@@ -123,3 +166,79 @@
     { passive: true }
   );
 })();
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+(() => {
+  const footer = document.querySelector("footer");
+  const contact = document.querySelector("#contact");
+
+  if (!footer || !contact) return;
+  if (!("IntersectionObserver" in window)) {
+    footer.classList.add("visible");
+    return;
+  }
+
+  new IntersectionObserver(
+    ([entry]) => {
+      footer.classList.toggle("visible", entry.isIntersecting);
+    },
+    { threshold: 1.0 }
+  ).observe(contact);
+})();
+
+/* ============================================================
+   FAKESCROLLBAR
+   ============================================================ */
+
+const scrollbar = document.querySelector(".scrollbar");
+const thumb = document.querySelector(".scrollbar-thumb");
+
+let hideTimer;
+let ticking = false;
+
+function updateThumb() {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const docHeight = document.documentElement.scrollHeight;
+  const viewportHeight = window.innerHeight;
+
+  const trackHeight = scrollbar.getBoundingClientRect().height;
+
+  const ratio = viewportHeight / docHeight;
+  const thumbHeight = Math.max(ratio * trackHeight, 40);
+
+  const maxScroll = docHeight - viewportHeight;
+  const maxThumbTravel = trackHeight - thumbHeight;
+  const thumbTop = maxScroll > 0 ? (scrollTop / maxScroll) * maxThumbTravel : 0;
+
+  thumb.style.height = `${thumbHeight}px`;
+  thumb.style.transform = `translateY(${thumbTop}px)`;
+}
+
+function showScrollbar() {
+  scrollbar.classList.add("visible");
+
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(() => {
+    scrollbar.classList.remove("visible");
+  }, 700);
+}
+
+function onScroll() {
+  showScrollbar();
+
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      updateThumb();
+      ticking = false;
+    });
+    ticking = true;
+  }
+}
+
+window.addEventListener("scroll", onScroll, { passive: true });
+window.addEventListener("resize", updateThumb);
+
+updateThumb();

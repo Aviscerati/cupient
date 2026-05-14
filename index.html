@@ -3,8 +3,53 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>cupient</title>
-    <link rel="stylesheet" href="styles.css">
+
+    <!-- ============================================================
+         SEO
+         ============================================================ -->
+    <title>cupient | Andy Vismanos – CS Student & Developer</title>
+    <meta name="description" content="Hi, I'm Andy – a computer systems student at CSU who builds things with HTML, CSS, JavaScript, Python, and C." />
+    <meta name="author" content="April Anderson P. Vismanos" />
+    <link rel="canonical" href="https://cupient.tech/" />
+
+    <!-- Open Graph (link previews on Discord, Messenger, iMessage, etc.) -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content="https://cupient.tech/" />
+    <meta property="og:title"       content="cupient | April Vismanos" />
+    <meta property="og:description" content="Portfolio of April Vismanos – CS student and developer." />
+    <meta property="og:image"       content="https://cupient.tech/photo.jpg" />
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card"        content="summary" />
+    <meta name="twitter:title"       content="cupient | April Vismanos" />
+    <meta name="twitter:description" content="Portfolio of April Vismanos – CS student and developer." />
+
+    <!-- Structured data — tells Google exactly who this page is about -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "April Anderson P. Vismanos",
+      "alternateName": "cupient",
+      "url": "https://cupient.tech/",
+      "jobTitle": "Information Technologies Student",
+      "alumniOf": "CSU",
+      "knowsAbout": ["HTML", "CSS", "JavaScript", "Lua", "Python", "C"],
+      "sameAs": [
+        "https://github.com/aviderant",
+        "https://linkedin.com/in/YOUR_HANDLE"
+      ]
+    }
+    </script>
+
+    <!-- ============================================================
+         PERFORMANCE
+         ============================================================ -->
+    <!-- Early connection to Google Fonts so they don't block render -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
@@ -36,7 +81,8 @@
     </section>
 
     <section id="about">
-      <img src="photo.jpg" alt="A photo of me" />
+      <!-- loading="lazy" defers the image fetch until it's near the viewport -->
+      <img src="photo.jpg" alt="Photo of Andy Vismanos" width="300" height="300" loading="lazy" />
       <div class="about-text">
         <h2>About Me</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempor volutpat odio, vitae cursus tortor condimentum accumsan. Maecenas ut orci nulla. Curabitur tincidunt varius velit in porttitor. Quisque molestie a tellus at tincidunt. Proin volutpat vel velit ac lobortis. Maecenas gravida enim vitae massa venenatis, in dapibus augue fringilla. Vestibulum id tempor dui. Nullam ullamcorper lacus eu sapien tempus, ac finibus lacus ultricies</p>
@@ -62,7 +108,7 @@
         <div class="project-card">
           <div class="project-header">
             <h3>Coming Soon.</h3>
-            <a href="#" target="_blank">↗</a>
+            <a href="#" aria-label="View project (coming soon)">↗</a>
           </div>
           <p>Someday, down the line.</p>
           <div class="project-tags">
@@ -75,7 +121,7 @@
         <div class="project-card">
           <div class="project-header">
             <h3>Coming Soon.</h3>
-            <a href="#" target="_blank">↗</a>
+            <a href="#" aria-label="View project (coming soon)">↗</a>
           </div>
           <p>Someday, down the line.</p>
           <div class="project-tags">
@@ -94,19 +140,17 @@
       <a href="mailto:cupient@proton.com" class="contact-btn">Say Hello</a>
 
       <div class="socials">
-        <a href="#">GitHub</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">Twitter</a>
+        <!-- Replace href="#" with your real profile URLs -->
+        <a href="https://github.com/aviderant"       target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://linkedin.com/in/YOUR_HANDLE"  target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://facebook.com/cupient"      target="_blank" rel="noopener noreferrer">Twitter</a>
       </div>
     </section>
 
     <footer>
-      <p>Designed & Built by <span>April Anderson P. Vismanos</span>.</p>
+      <p>Designed &amp; Built by <span>April Anderson P. Vismanos</span>.</p>
     </footer>
 
-    <script defer src="fakescrollbar.js"></script>
-    <script defer src="nav.js"></script>
-    <script defer src="footer.js"></script>
-    <script defer src="scrollsnap.js"></script>
+    <script defer src="main.js"></script>
   </body>
 </html>
