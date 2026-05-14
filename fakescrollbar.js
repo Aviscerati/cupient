@@ -9,7 +9,11 @@ function updateThumb() {
   const docHeight = document.documentElement.scrollHeight;
   const viewportHeight = window.innerHeight;
 
-  const trackHeight = viewportHeight;
+  // Use the scrollbar element's actual rendered height, not the full viewport.
+  // The track is inset by the nav at the top and the footer gap at the bottom,
+  // so using viewportHeight caused the thumb to travel beyond the track bounds.
+  const trackHeight = scrollbar.getBoundingClientRect().height;
+
   const ratio = viewportHeight / docHeight;
   const thumbHeight = Math.max(ratio * trackHeight, 40);
 
