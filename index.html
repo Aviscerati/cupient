@@ -3,28 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0c" />
 
     <!-- ============================================================
          SEO
          ============================================================ -->
     <title>cupient</title>
-    <meta name="description" content="Hi, I'm Andy – an information technologies student at CCIS-CSU who builds things with HTML, CSS, JavaScript, Python, and C." />
+    <meta name="description" content="Portfolio of April Vismanos, an IT student at CSU." />
     <meta name="author" content="April Anderson P. Vismanos" />
     <link rel="canonical" href="https://cupient.tech/" />
 
-    <!-- Open Graph (link previews on Discord, Messenger, iMessage, etc.) -->
     <meta property="og:type"        content="website" />
     <meta property="og:url"         content="https://cupient.tech/" />
-    <meta property="og:title"       content="cupient | April Vismanos" />
-    <meta property="og:description" content="April's Portfolio – IT student and developer." />
-    <meta property="og:image"       content="https://cupient.tech/photo.jpg" />
+    <meta property="og:title"       content="cupient | Portfolio" />
+    <meta property="og:description" content="Portfolio of April Vismanos, IT student at CSU." />
+    <meta property="og:image"       content="https://cupient.tech/optimized.jpg" />
 
-    <!-- Twitter / X card -->
     <meta name="twitter:card"        content="summary" />
-    <meta name="twitter:title"       content="cupient | April Vismanos" />
-    <meta name="twitter:description" content="Portfolio of April Vismanos – IT student and developer." />
+    <meta name="twitter:title"       content="cupient | Portfolio" />
+    <meta name="twitter:description" content="Portfolio of April Vismanos, IT student at CSU." />
 
-    <!-- Structured data — tells Google exactly who this page is about -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -42,10 +40,6 @@
     }
     </script>
 
-    <!-- ============================================================
-         PERFORMANCE
-         ============================================================ -->
-    <!-- Early connection to Google Fonts so they don't block render -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
@@ -59,7 +53,7 @@
     </div>
 
     <nav>
-      <span class="logo">cupient</span>
+      <span class="logo" title="Latin: desiring, one who longs">cupient</span>
 
       <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
         <span></span>
@@ -69,48 +63,157 @@
 
       <ul class="nav-menu">
         <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
 
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
     <section id="hero">
-      <h1>Hi, I'm <span>Andy</span>.</h1>
-      <p class="subtitle">A student from CSU, learning about computer systems.</p>
-      <a href="#contact">Let's get in touch</a>
+      <div class="hero-bg" aria-hidden="true">
+        <svg class="hero-bg-svg" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <text class="hbg-chr hbg-chr--r" x="500" y="360" text-anchor="middle" font-family="Syne, sans-serif" font-weight="800" font-size="330" textLength="992" lengthAdjust="spacingAndGlyphs" fill="none" stroke="#e63946" stroke-width="0.9">ANDY</text>
+          <text class="hbg-chr hbg-chr--o" x="500" y="360" text-anchor="middle" font-family="Syne, sans-serif" font-weight="800" font-size="330" textLength="992" lengthAdjust="spacingAndGlyphs" fill="none" stroke="#f4831f" stroke-width="0.9">ANDY</text>
+          <text class="hbg-main" x="500" y="360" text-anchor="middle" font-family="Syne, sans-serif" font-weight="800" font-size="330" textLength="992" lengthAdjust="spacingAndGlyphs" fill="none" stroke="#f2ede7" stroke-width="0.7">ANDY</text>
+        </svg>
+      </div>
+      
+      <div class="hero-content">
+        <!-- Dictionary Definition Block -->
+        <div class="dict-block">
+          <span class="dict-word">cu·pi·ent</span>
+          <span class="dict-phonetic">/ˈkyo͞opēənt/</span>
+          <span class="dict-pos">adjective</span>
+          <ol class="dict-def">
+            <li>desiring; longing; eager.</li>
+            <li>wanting to learn.</li>
+          </ol>
+        </div>
+
+        <h1>Hi, I'm<br><span>Andy</span>.</h1>
+        <p class="subtitle">I'm a first-year IT student at CSU. I build websites and study how computer systems work.</p>
+        <a href="#about">More about me</a>
+      </div>
+
+      <span class="hero-side-label" aria-hidden="true">Portfolio · 2026</span>
+
+      <div class="hero-badge" aria-hidden="true">
+        <svg class="hero-badge-ring" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <path id="badge-arc" d="M55,55 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1,-76,0"/>
+          </defs>
+          <text font-size="8.6" fill="#5e5e68" font-family="Karla, sans-serif" font-weight="700" letter-spacing="2">
+            <textPath href="#badge-arc" startOffset="0%">
+              DESIRING · LONGING · AVID · BUILDING ·
+            </textPath>
+          </text>
+        </svg>
+        <span class="hero-badge-arrow">↗</span>
+      </div>
+
+      <div class="hero-ticker" aria-label="Skills">
+        <div class="hero-ticker-inner">
+          <span>HTML</span><span class="ht-sep">·</span>
+          <span>CSS</span><span class="ht-sep">·</span>
+          <span>JavaScript</span><span class="ht-sep">·</span>
+          <span>Lua</span><span class="ht-sep">·</span>
+          <span>Python</span><span class="ht-sep">·</span>
+          <span>C</span><span class="ht-sep">·</span>
+        </div>
+      </div>
     </section>
 
+    <!-- ============================================================
+         ABOUT
+         ============================================================ -->
     <section id="about">
-      <!-- loading="lazy" defers the image fetch until it's near the viewport -->
-      <img src="photo.jpg" alt="Photo of Andy Vismanos" width="300" height="300" loading="lazy" />
+      <img src="optimized.jpg" alt="Photo of April Vismanos" width="300" height="300" loading="lazy" />
       <div class="about-text">
         <h2>About Me</h2>
-        <p>Hi, I'm Andy – an information technologies student at CCIS-CSU who builds things with HTML, CSS, JavaScript, Python, and C.</p>
+        <p>My online handle is <em>cupient</em>, which translates to "eager" in Latin. Right now, I'm studying Information Technology at CCIS-CSU.</p>
+        <p style="margin-top: 12px;">I mostly write HTML, CSS, and JavaScript for web projects. I'm also learning Python and C for my classes. Overall, I'm just trying to get better at programming every day.</p>
+
+        <div class="about-stats">
+          <span class="stat-chip">Student</span>
+          <span class="stat-chip">CCIS · CSU</span>
+          <span class="stat-chip">IT</span>
+        </div>
       </div>
     </section>
 
+    <!-- ============================================================
+         SKILLS
+         ============================================================ -->
     <section id="skills">
-      <h2>What I know</h2>
+      <h2>Languages</h2>
       <div class="skills-grid">
-        <div class="skill-card">HTML</div>
-        <div class="skill-card">CSS</div>
-        <div class="skill-card">JavaScript</div>
-        <div class="skill-card">Lua</div>
-        <div class="skill-card">Python</div>
-        <div class="skill-card">C</div>
+        <!-- HTML -->
+        <div class="skill-card">
+          <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M11 8L4 16l7 8M21 8l7 8-7 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          HTML
+        </div>
+        <!-- CSS -->
+        <div class="skill-card">
+          <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="5" y="7"  width="22" height="3"  rx="1.5" fill="currentColor"/>
+            <rect x="5" y="14" width="16" height="3"  rx="1.5" fill="currentColor"/>
+            <rect x="5" y="21" width="10" height="3"  rx="1.5" fill="currentColor"/>
+          </svg>
+          CSS
+        </div>
+        <!-- JavaScript -->
+        <div class="skill-card">
+          <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10 6H8a2 2 0 00-2 2v5a2 2 0 01-2 2 2 2 0 012 2v5a2 2 0 002 2h2M22 6h2a2 2 0 012 2v5a2 2 0 002 2 2 2 0 00-2 2v5a2 2 0 01-2 2h-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          JavaScript
+        </div>
+        <!-- Lua -->
+        <div class="skill-card">
+          <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M20 8a10 10 0 100 16 8 8 0 010-16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            <circle cx="23.5" cy="8.5" r="3" fill="currentColor"/>
+          </svg>
+          Lua
+        </div>
+        <!-- Python -->
+        <div class="skill-card">
+          <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M11 5h7a3 3 0 013 3v5a3 3 0 01-3 3H11a3 3 0 00-3 3v4a3 3 0 003 3h7a3 3 0 003-3M11 5A3 3 0 008 8v2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="13.5" cy="8.5" r="1.2" fill="currentColor"/>
+            <circle cx="18.5" cy="23.5" r="1.2" fill="currentColor"/>
+          </svg>
+          Python
+        </div>
+        <!-- C -->
+        <div class="skill-card">
+          <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M23 10a9 9 0 100 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          C
+        </div>
       </div>
     </section>
 
+    <!-- ============================================================
+         PROJECTS
+         ============================================================ -->
     <section id="projects">
-      <h2>My Work</h2>
+      <h2>Projects</h2>
       <div class="projects-grid">
 
         <div class="project-card">
+          <div class="project-preview" aria-hidden="true"></div>
           <div class="project-header">
-            <h3>Coming Soon.</h3>
+            <h3>Coming Soon</h3>
             <a href="#" aria-label="View project (coming soon)">↗</a>
           </div>
-          <p>Someday, down the line.</p>
+          <p>I don't have anything to show here yet.</p>
           <div class="project-tags">
             <span>HTML</span>
             <span>CSS</span>
@@ -119,11 +222,12 @@
         </div>
 
         <div class="project-card">
+          <div class="project-preview" aria-hidden="true"></div>
           <div class="project-header">
-            <h3>Coming Soon.</h3>
+            <h3>Coming Soon</h3>
             <a href="#" aria-label="View project (coming soon)">↗</a>
           </div>
-          <p>Someday, down the line.</p>
+          <p>I don't have anything to show here yet.</p>
           <div class="project-tags">
             <span>HTML</span>
             <span>CSS</span>
@@ -134,21 +238,23 @@
       </div>
     </section>
 
+    <!-- ============================================================
+         CONTACT
+         ============================================================ -->
     <section id="contact">
-      <h2>Get In Touch</h2>
-      <p class="contact-sub">Whether it's a project, an opportunity, or just a hello.</p>
-      <a href="mailto:cupient@proton.com" class="contact-btn">Say Hello</a>
+      <h2>Contact</h2>
+      <p class="contact-sub">Send me an email if you want to work on a project or talk about code.</p>
+      <a href="mailto:cupient@proton.com" class="contact-btn">Email me</a>
 
       <div class="socials">
-        <!-- Replace href="#" with your real profile URLs -->
-        <a href="https://github.com/aviderant"       target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://linkedin.com/in/cupient"  target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/aviderant"      target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://linkedin.com/in/cupient"   target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a href="https://facebook.com/cupient"      target="_blank" rel="noopener noreferrer">Facebook</a>
       </div>
     </section>
 
     <footer>
-      <p>Designed &amp; Built by <span>April Anderson P. Vismanos</span>.</p>
+      <p>Designed and built by <span>April Anderson P. Vismanos</span>.</p>
     </footer>
 
     <script defer src="main.js"></script>
