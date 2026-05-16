@@ -772,26 +772,43 @@ nav a:hover::after, nav a.active::after {
   --carousel-card-width: clamp(180px, 62vw, 260px);
   --carousel-gap: 12px;
   position: relative;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   padding: 6px 0 12px;
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
-  touch-action: pan-y;
+  touch-action: pan-x pan-y;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .skills-carousel.is-dragging { cursor: grabbing; }
+.skills-carousel.is-animated {
+  overflow: hidden;
+  scroll-snap-type: none;
+  touch-action: pan-y;
+}
+.skills-carousel::-webkit-scrollbar { display: none; }
 
 .skills-track {
   display: flex;
   align-items: stretch;
   gap: var(--carousel-gap);
   width: max-content;
+  min-width: 100%;
   will-change: transform;
 }
 
 .skills-track .skill-card {
   flex: 0 0 var(--carousel-card-width);
+  scroll-snap-align: start;
+}
+.skills-carousel .skill-card {
+  opacity: 1;
+  transform: none;
 }
 
 .skill-card {
