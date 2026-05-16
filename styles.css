@@ -209,7 +209,12 @@ nav, section, footer {
   transition: color 0.2s;
 }
 
-.error-link:hover { color: var(--text-primary); }
+.error-link:hover,
+.error-link:focus-visible {
+  color: var(--text-primary);
+  outline: 2px solid var(--border-hover);
+  outline-offset: 4px;
+}
 
 .scrollbar {
   position: fixed;
