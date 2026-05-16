@@ -506,7 +506,7 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     startX = e.clientX;
     startOffset = offset;
     carousel.classList.add('is-dragging');
-    if (e.pointerType !== 'touch') {
+    if (e.pointerType !== 'touch' && e.pointerId != null) {
       carousel.setPointerCapture(e.pointerId);
     }
   }
