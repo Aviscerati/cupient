@@ -420,7 +420,7 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   let startX = 0;
   let startOffset = 0;
   let lastTime = 0;
-  let allowMotion = !prefersReducedMotion.matches && !isTouch;
+  let allowMotion = !prefersReducedMotion.matches;
 
   function getGapSize() {
     const styles = window.getComputedStyle(track);
@@ -489,7 +489,7 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   }
 
   function updateMotionState() {
-    allowMotion = !prefersReducedMotion.matches && !isTouch;
+    allowMotion = !prefersReducedMotion.matches;
     carousel.classList.toggle('is-animated', allowMotion);
   }
 
@@ -506,7 +506,9 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     startX = e.clientX;
     startOffset = offset;
     carousel.classList.add('is-dragging');
-    carousel.setPointerCapture(e.pointerId);
+    if (e.pointerType !== 'touch') {
+      carousel.setPointerCapture(e.pointerId);
+    }
   }
 
   function handlePointerMove(e) {
