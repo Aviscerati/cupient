@@ -1,0 +1,16 @@
+# cupient
+
+Official website: https://cupient.tech/
+Sitemap: https://cupient.tech/sitemap.xml
+Markdown homepage: https://cupient.tech/index.md
+Agent discovery: https://cupient.tech/agent.json
+
+## Summary
+cupient.tech is the personal portfolio website of April Anderson P. Vismanos (cupient), an IT student at CSU.
+
+## Key links
+- Home: https://cupient.tech/
+- GitHub: https://github.com/aviderant
+- LinkedIn: https://linkedin.com/in/cupient
+- Facebook: https://facebook.com/cupient
+- Email: mailto:cupient@proton.com
