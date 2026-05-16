@@ -420,6 +420,7 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   let startX = 0;
   let startOffset = 0;
   let lastTime = 0;
+  let allowMotion = !prefersReducedMotion.matches && !isTouch;
 
   function getGapSize() {
     const styles = window.getComputedStyle(track);
@@ -451,14 +452,16 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     baseWidth = track.scrollWidth + getGapSize();
     if (!baseWidth) return;
 
-    const visibleWidth = carousel.offsetWidth;
-    const copies = Math.max(MIN_COPIES, Math.ceil((visibleWidth * VIEWPORT_MULTIPLIER) / baseWidth));
-    track.innerHTML = base.repeat(copies);
+    if (allowMotion) {
+      const visibleWidth = carousel.offsetWidth;
+      const copies = Math.max(MIN_COPIES, Math.ceil((visibleWidth * VIEWPORT_MULTIPLIER) / baseWidth));
+      track.innerHTML = base.repeat(copies);
+    }
     track.querySelectorAll('.skill-card').forEach((card) => {
       card.classList.remove('reveal', 'visible');
       card.style.transitionDelay = '';
     });
-    setOffset(offset);
+    setOffset(allowMotion ? offset : 0);
   }
 
   function tick(time) {
@@ -466,7 +469,7 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     const delta = (time - lastTime) / 1000;
     lastTime = time;
 
-    if (!prefersReducedMotion.matches && !isPaused && !isDragging && baseWidth) {
+    if (allowMotion && !isPaused && !isDragging && baseWidth) {
       setOffset(offset - delta * SCROLL_SPEED_PX_PER_SEC);
     }
 
@@ -483,6 +486,18 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     if (rafId) return;
     lastTime = 0;
     rafId = requestAnimationFrame(tick);
+  }
+
+  function updateMotionState() {
+    allowMotion = !prefersReducedMotion.matches && !isTouch;
+    carousel.classList.toggle('is-animated', allowMotion);
+  }
+
+  function updateCarousel() {
+    stopTick();
+    updateMotionState();
+    setupCarousel();
+    if (allowMotion) startTick();
   }
 
   function handlePointerDown(e) {
@@ -521,23 +536,27 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   carousel.addEventListener('pointerleave', handlePointerUp);
 
   window.addEventListener('resize', () => {
-    stopTick();
-    setupCarousel();
-    startTick();
+    updateCarousel();
   });
 
-  prefersReducedMotion.addEventListener('change', () => {
+  const handleMotionChange = () => {
     lastTime = 0;
-  });
+    updateCarousel();
+  };
 
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(setupCarousel).catch(() => {});
-  } else {
-    window.addEventListener('load', setupCarousel, { once: true });
+  if (typeof prefersReducedMotion.addEventListener === 'function') {
+    prefersReducedMotion.addEventListener('change', handleMotionChange);
+  } else if (typeof prefersReducedMotion.addListener === 'function') {
+    prefersReducedMotion.addListener(handleMotionChange);
   }
 
-  setupCarousel();
-  startTick();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(updateCarousel).catch(() => {});
+  } else {
+    window.addEventListener('load', updateCarousel, { once: true });
+  }
+
+  updateCarousel();
 })();
 
 // Active Nav Link Tracker
