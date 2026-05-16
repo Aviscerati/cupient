@@ -421,11 +421,21 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   let startOffset = 0;
   let lastTime = 0;
 
+  function getGapSize() {
+    const styles = window.getComputedStyle(track);
+    const flexDirection = styles.flexDirection || 'row';
+    const axisGap = flexDirection.startsWith('column') ? styles.rowGap : styles.columnGap;
+    const parseGap = (value) => {
+      const parsed = Number.parseFloat(value);
+      return Number.isFinite(parsed) ? parsed : null;
+    };
+    return parseGap(styles.gap) ?? parseGap(axisGap) ?? 0;
+  }
+
   function wrapOffset(value) {
     if (!baseWidth) return value;
-    if (value <= -baseWidth) return value + baseWidth;
-    if (value > 0) return value - baseWidth;
-    return value;
+    const wrapped = ((value % baseWidth) + baseWidth) % baseWidth;
+    return wrapped === 0 ? 0 : wrapped - baseWidth;
   }
 
   function setOffset(value) {
@@ -438,7 +448,7 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     if (!base) return;
 
     track.innerHTML = base;
-    baseWidth = track.scrollWidth;
+    baseWidth = track.scrollWidth + getGapSize();
     if (!baseWidth) return;
 
     const visibleWidth = carousel.offsetWidth;
