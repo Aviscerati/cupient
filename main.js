@@ -360,14 +360,44 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 // Skills Ticker Duplication
 (() => {
   const inner = document.querySelector('.hero-ticker-inner');
-  if (!inner || !inner.scrollWidth) return;
+  if (!inner) return;
 
-  const gap = parseFloat(window.getComputedStyle(inner).gap) || 18;
-  const singleW = inner.scrollWidth + gap; 
-  const copies = Math.ceil((window.innerWidth * 2) / singleW) + 2;
-  
-  inner.innerHTML = inner.innerHTML.repeat(copies);
-  inner.style.setProperty('--ticker-offset', `${singleW}px`);
+  if (!inner.dataset.tickerBase) {
+    inner.dataset.tickerBase = inner.innerHTML;
+  }
+
+  let resizeTimer;
+
+  function setupTicker() {
+    const base = inner.dataset.tickerBase;
+    if (!base) return;
+
+    inner.innerHTML = base;
+    const gap = parseFloat(window.getComputedStyle(inner).gap) || 18;
+    const singleW = inner.scrollWidth + gap;
+    if (!singleW) return;
+
+    const copies = Math.ceil((window.innerWidth * 2) / singleW) + 2;
+    inner.innerHTML = base.repeat(copies);
+    inner.style.setProperty('--ticker-offset', `${singleW}px`);
+  }
+
+  function scheduleSetup() {
+    requestAnimationFrame(setupTicker);
+  }
+
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(scheduleSetup, 150);
+  });
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(scheduleSetup).catch(() => {});
+  } else {
+    window.addEventListener('load', scheduleSetup, { once: true });
+  }
+
+  setupTicker();
 })();
 
 // Active Nav Link Tracker
@@ -383,13 +413,39 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     if (nav) nav.classList.toggle('at-hero', id === 'hero');
   }
 
-  setActive(sections[0].id);
+  let ticking = false;
 
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) setActive(entry.target.id);
+  function updateActive() {
+    ticking = false;
+    const bandTop = window.innerHeight * 0.35;
+    const bandBottom = window.innerHeight * 0.55;
+
+    let bestId = null;
+    let bestDistance = Infinity;
+    let fallbackId = sections[0].id;
+
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= bandTop) fallbackId = section.id;
+
+      if (rect.bottom < bandTop || rect.top > bandBottom) return;
+      const distance = Math.abs(rect.top - bandTop);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestId = section.id;
+      }
     });
-  }, { rootMargin: '-35% 0px -45% 0px', threshold: 0 });
 
-  sections.forEach(s => obs.observe(s));
+    setActive(bestId || fallbackId);
+  }
+
+  function requestUpdate() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateActive);
+  }
+
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate);
+  requestUpdate();
 })();
