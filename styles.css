@@ -204,7 +204,7 @@ nav, section, footer {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 12px;
+  padding: 8px 18px;
   border-radius: 999px;
   color: var(--text-muted);
   text-decoration: none;
