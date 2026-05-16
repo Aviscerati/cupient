@@ -686,6 +686,88 @@ nav a:hover::after, nav a.active::after {
   color: var(--text-primary);
 }
 
+#skills { gap: 24px; }
+
+.skills-header {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.skills-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skills-sub {
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+.skills-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.highlight-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 16px;
+  color: var(--text-muted);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.22s, transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.highlight-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 40%, rgba(255, 255, 255, 0.04) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  pointer-events: none;
+}
+
+.highlight-card:hover::after { transform: translateX(100%); }
+
+.highlight-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(230, 57, 70, 0.08);
+}
+
+.highlight-label {
+  display: inline-block;
+  font-size: var(--fs-tag);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.highlight-card p {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.skills-kicker {
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -696,8 +778,8 @@ nav a:hover::after, nav a.active::after {
   background-color: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
-  padding: 20px 18px;
-  color: var(--text-muted);
+  padding: 20px 18px 18px;
+  color: var(--text-primary);
   font-size: var(--fs-body);
   font-weight: 600;
   display: flex;
@@ -727,6 +809,63 @@ nav a:hover::after, nav a.active::after {
   background-color: var(--accent-ghost);
   transform: translateY(-3px);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 8px 28px rgba(230, 57, 70, 0.09);
+}
+
+.skill-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.skill-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skill-name {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.skill-role {
+  font-size: var(--fs-tag);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.skill-desc {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.skill-tags span {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-tag);
+  color: var(--text-dim);
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.skill-card:hover .skill-tags span {
+  border-color: var(--border-hover);
+  color: var(--text-muted);
 }
 
 .skill-icon {
@@ -956,6 +1095,12 @@ footer span { color: var(--accent-end); }
   #about { flex-direction: row; text-align: left; align-items: center; gap: 48px; }
   #about img { width: 180px; height: 180px; }
   .about-stats { justify-content: flex-start; }
+  .skills-header {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) 1.4fr;
+    align-items: start;
+    gap: 32px;
+  }
   .skills-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .projects-grid { grid-template-columns: 1fr; gap: 16px; }
   #hero { min-height: calc(100svh - var(--nav-h)); justify-content: center; }
@@ -1028,7 +1173,7 @@ footer span { color: var(--accent-end); }
   .hero-badge { width: 110px; height: 110px; }
   .hero-badge-arrow { font-size: 24px; }
   #hero p.subtitle, .contact-sub { max-width: 560px; }
-  .skills-grid { grid-template-columns: repeat(6, 1fr); gap: 14px; }
+  .skills-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
   .project-preview { height: 170px; }
 }
 
