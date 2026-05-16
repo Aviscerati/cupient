@@ -454,6 +454,10 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     const visibleWidth = carousel.offsetWidth;
     const copies = Math.max(MIN_COPIES, Math.ceil((visibleWidth * VIEWPORT_MULTIPLIER) / baseWidth));
     track.innerHTML = base.repeat(copies);
+    track.querySelectorAll('.skill-card').forEach((card) => {
+      card.classList.remove('reveal', 'visible');
+      card.style.transitionDelay = '';
+    });
     setOffset(offset);
   }
 
