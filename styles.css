@@ -768,10 +768,30 @@ nav a:hover::after, nav a.active::after {
   margin-top: 6px;
 }
 
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+.skills-carousel {
+  --carousel-card-width: clamp(180px, 62vw, 260px);
+  --carousel-gap: 12px;
+  position: relative;
+  overflow: hidden;
+  padding: 6px 0 12px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+}
+
+.skills-carousel.is-dragging { cursor: grabbing; }
+
+.skills-track {
+  display: flex;
+  align-items: stretch;
+  gap: var(--carousel-gap);
+  width: max-content;
+  will-change: transform;
+}
+
+.skills-track .skill-card {
+  flex: 0 0 var(--carousel-card-width);
 }
 
 .skill-card {
@@ -1073,7 +1093,7 @@ footer span { color: var(--accent-end); }
   }
   .nav-menu li:last-child a { border-bottom: none; }
   
-  .skills-grid { grid-template-columns: 1fr; gap: 8px; }
+  .skills-carousel { --carousel-card-width: clamp(190px, 74vw, 240px); --carousel-gap: 10px; }
   .error-card { padding: 36px 24px; }
   .error-actions { flex-direction: column; }
   .error-eyebrow { letter-spacing: 0.1em; }
@@ -1101,7 +1121,7 @@ footer span { color: var(--accent-end); }
     align-items: start;
     gap: 32px;
   }
-  .skills-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .skills-carousel { --carousel-card-width: clamp(200px, 40vw, 250px); --carousel-gap: 12px; }
   .projects-grid { grid-template-columns: 1fr; gap: 16px; }
   #hero { min-height: calc(100svh - var(--nav-h)); justify-content: center; }
   #hero p.subtitle, .contact-sub { max-width: 380px; }
@@ -1146,7 +1166,7 @@ footer span { color: var(--accent-end); }
   #about { gap: 80px; }
   #about img { width: 260px; height: 260px; }
   
-  .skills-grid { gap: 14px; }
+  .skills-carousel { --carousel-card-width: clamp(220px, 28vw, 280px); --carousel-gap: 14px; }
   .skill-card { padding: 24px 20px; gap: 14px; }
   .skill-icon { width: 30px; height: 30px; }
   
@@ -1173,7 +1193,7 @@ footer span { color: var(--accent-end); }
   .hero-badge { width: 110px; height: 110px; }
   .hero-badge-arrow { font-size: 24px; }
   #hero p.subtitle, .contact-sub { max-width: 560px; }
-  .skills-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .skills-carousel { --carousel-card-width: 260px; --carousel-gap: 14px; }
   .project-preview { height: 170px; }
 }
 
