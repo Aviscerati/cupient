@@ -116,6 +116,7 @@ nav, section, footer {
 
 /* 404 page */
 .error-page-main {
+  min-height: 100vh;
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -155,7 +156,7 @@ nav, section, footer {
 
 .error-eyebrow {
   display: inline-block;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.35em;
   text-transform: uppercase;
