@@ -10,6 +10,8 @@
   --accent-start: #e63946;
   --accent-end: #f4831f;
   --accent-ghost: rgba(230, 57, 70, 0.08);
+  --accent-start-soft: rgba(230, 57, 70, 0.24);
+  --accent-end-soft: rgba(244, 131, 31, 0.2);
 
   --border-subtle: #18181c;
   --border-hover: #2a2a32;
@@ -148,8 +150,8 @@ nav, section, footer {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 15% 20%, rgba(230, 57, 70, 0.24), transparent 55%),
-    radial-gradient(circle at 85% 80%, rgba(244, 131, 31, 0.2), transparent 55%);
+    radial-gradient(circle at 15% 20%, var(--accent-start-soft), transparent 55%),
+    radial-gradient(circle at 85% 80%, var(--accent-end-soft), transparent 55%);
   opacity: 0.6;
   pointer-events: none;
 }
@@ -1100,6 +1102,10 @@ body.is-scrolling .grain-overlay { animation-play-state: paused; }
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+
+  .error-link {
+    transition: none;
   }
 }
 
