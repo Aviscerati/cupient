@@ -423,15 +423,14 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
   function getGapSize() {
     const styles = window.getComputedStyle(track);
-    const gapValue = styles.columnGap || styles.gap || styles.rowGap;
+    const gapValue = styles.gap || styles.columnGap || styles.rowGap;
     return Number.parseFloat(gapValue) || 0;
   }
 
   function wrapOffset(value) {
     if (!baseWidth) return value;
-    let wrapped = value % baseWidth;
-    if (wrapped > 0) wrapped -= baseWidth;
-    return wrapped;
+    const wrapped = ((value % baseWidth) + baseWidth) % baseWidth;
+    return wrapped === 0 ? 0 : wrapped - baseWidth;
   }
 
   function setOffset(value) {
