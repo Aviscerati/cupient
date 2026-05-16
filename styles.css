@@ -25,6 +25,8 @@
   --fs-h3: 17px;
   --fs-h2: 24px;
   --fs-h1: 38px;
+  --fs-eyebrow: 12px;
+  --fs-link: 14px;
 
   --nav-h: 54px;
   --pad-x: 5%;
@@ -163,7 +165,7 @@ nav, section, footer {
 
 .error-eyebrow {
   display: inline-block;
-  font-size: 12px;
+  font-size: var(--fs-eyebrow);
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -210,7 +212,7 @@ nav, section, footer {
   border-radius: 999px;
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 14px;
+  font-size: var(--fs-link);
   font-weight: 500;
   letter-spacing: 0.4px;
   transition: color 0.2s, background-color 0.2s, box-shadow 0.2s;
