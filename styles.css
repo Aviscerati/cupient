@@ -201,19 +201,25 @@ nav, section, footer {
 }
 
 .error-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
   color: var(--text-muted);
   text-decoration: none;
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.4px;
-  transition: color 0.2s;
+  transition: color 0.2s, background-color 0.2s, box-shadow 0.2s;
 }
 
 .error-link:hover,
 .error-link:focus-visible {
   color: var(--text-primary);
-  outline: 2px solid var(--accent-start);
-  outline-offset: 4px;
+  background-color: var(--accent-ghost);
+  box-shadow: 0 0 0 2px var(--accent-start);
+  outline: none;
 }
 
 .scrollbar {
