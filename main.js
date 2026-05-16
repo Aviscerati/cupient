@@ -23,8 +23,6 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
 // Scrollsnap
 (() => {
-  if (isTouch) return;
-
   function easeInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
@@ -100,6 +98,8 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
       if (target) await smoothScrollTo(target, 900);
     });
   });
+
+  if (isTouch) return;
 
   let lastScrollY = window.scrollY;
   let scrollDirection = "down";

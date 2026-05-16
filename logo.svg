@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
   <defs>
-    <!-- Brand gradient for the top spike -->
     <linearGradient id="northstarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#E63946" />
       <stop offset="100%" stop-color="#F4831F" />
     </linearGradient>
   </defs>
 
-  <!-- Base (Slate Gray so it's visible on both dark and light browser tabs) -->
-  <path fill="#9ca3af" 
+  <!-- Dark rounded background -->
+  <circle cx="256" cy="256" r="256" fill="#1a1a1a" />
+
+  <path fill="#FFFFFF" 
         d="M 10 265 
            L 205 245 
            L 256 265 
@@ -19,7 +20,6 @@
            L 205 310 
            Z" />
            
-  <!-- Floating Elongated Top Point (Pushed to the absolute top edge) -->
   <path fill="url(#northstarGrad)" 
         d="M 256 10 
            L 307 220 
