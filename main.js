@@ -29,23 +29,26 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
   let activeAnimation = null;
   let isProgrammaticScroll = false;
+  const nav = document.querySelector('nav');
   const sections = Array.from(document.querySelectorAll("section"));
+  const lastSection = sections[sections.length - 1];
+  if (!sections.length) return;
+
+  const getNavHeight = () => nav?.offsetHeight || 0;
+  const getMaxScroll = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+  function getTargetScrollTop(target, navHeight, maxScroll) {
+    if (typeof target === "number") return target;
+    if (target.id === 'hero') return 0;
+    if (target === lastSection) return maxScroll;
+    return target.getBoundingClientRect().top + window.scrollY - navHeight;
+  }
 
   function smoothScrollTo(target, duration = 750) {
-    const navHeight = document.querySelector('nav')?.offsetHeight || 0;
+    const navHeight = getNavHeight();
     const start = window.scrollY;
-    const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    
-    let end;
-    if (typeof target === "number") {
-      end = target;
-    } else {
-      if (target.id === 'hero') end = 0; 
-      else if (target === sections[sections.length - 1]) end = maxScroll; 
-      else end = target.getBoundingClientRect().top + window.scrollY - navHeight;
-    }
-
-    end = Math.max(0, Math.min(end, maxScroll));
+    const maxScroll = getMaxScroll();
+    const end = Math.max(0, Math.min(getTargetScrollTop(target, navHeight, maxScroll), maxScroll));
     const distance = end - start;
 
     if (Math.abs(distance) < 2) return Promise.resolve();
@@ -93,8 +96,10 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", async function (e) {
+      const href = this.getAttribute("href");
       e.preventDefault();
-      const target = document.querySelector(this.getAttribute("href"));
+      if (!href || href === "#") return;
+      const target = document.querySelector(href);
       if (target) await smoothScrollTo(target, 900);
     });
   });
@@ -124,7 +129,8 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     snapTimer = setTimeout(async () => {
       if (isProgrammaticScroll) return;
 
-      const navHeight = document.querySelector('nav')?.offsetHeight || 0;
+      const navHeight = getNavHeight();
+      const maxScroll = getMaxScroll();
       let target = null;
 
       if (scrollDirection === "down") {
@@ -136,14 +142,8 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
       if (!target) return;
 
-      const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-      let targetTop;
-      
-      if (target.id === 'hero') targetTop = target.getBoundingClientRect().top;
-      else if (target === sections[sections.length - 1]) targetTop = maxScroll - window.scrollY; 
-      else targetTop = target.getBoundingClientRect().top - navHeight;
-        
-      if (Math.abs(targetTop) < 5) return;
+      const targetScrollTop = getTargetScrollTop(target, navHeight, maxScroll);
+      if (Math.abs(targetScrollTop - window.scrollY) < 5) return;
 
       isSnapping = true;
       await smoothScrollTo(target, 550);
@@ -169,44 +169,59 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 })();
 
 // Scrollbar
-const scrollbar = document.querySelector(".scrollbar");
-const thumb = document.querySelector(".scrollbar-thumb");
+(() => {
+  const scrollbar = document.querySelector(".scrollbar");
+  const thumb = document.querySelector(".scrollbar-thumb");
+  if (!scrollbar || !thumb) return;
 
-let hideTimer, ticking = false;
+  let hideTimer;
+  let ticking = false;
+  let trackHeight = 0;
 
-function updateThumb() {
-  const scrollTop = window.scrollY || document.documentElement.scrollTop;
-  const docHeight = document.documentElement.scrollHeight;
-  const viewportHeight = window.innerHeight;
-  const trackHeight = scrollbar.getBoundingClientRect().height;
-
-  const thumbHeight = Math.max((viewportHeight / docHeight) * trackHeight, 40);
-  const maxScroll = docHeight - viewportHeight;
-  const maxThumbTravel = trackHeight - thumbHeight;
-  const thumbTop = maxScroll > 0 ? (scrollTop / maxScroll) * maxThumbTravel : 0;
-
-  thumb.style.height = `${thumbHeight}px`;
-  thumb.style.transform = `translateY(${thumbTop}px)`;
-}
-
-function showScrollbar() {
-  scrollbar.classList.add("visible");
-  clearTimeout(hideTimer);
-  hideTimer = setTimeout(() => scrollbar.classList.remove("visible"), 700);
-}
-
-window.addEventListener("scroll", () => {
-  showScrollbar();
-  if (!ticking) {
-    requestAnimationFrame(() => {
-      updateThumb();
-      ticking = false;
-    });
-    ticking = true;
+  function updateTrackHeight() {
+    trackHeight = scrollbar.getBoundingClientRect().height;
   }
-}, { passive: true });
-window.addEventListener("resize", updateThumb);
-updateThumb();
+
+  function updateThumb() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight;
+    const viewportHeight = window.innerHeight;
+    if (!trackHeight) updateTrackHeight();
+
+    const thumbHeight = Math.max((viewportHeight / docHeight) * trackHeight, 40);
+    const maxScroll = docHeight - viewportHeight;
+    const maxThumbTravel = trackHeight - thumbHeight;
+    const thumbTop = maxScroll > 0 ? (scrollTop / maxScroll) * maxThumbTravel : 0;
+
+    thumb.style.height = `${thumbHeight}px`;
+    thumb.style.transform = `translateY(${thumbTop}px)`;
+  }
+
+  function showScrollbar() {
+    scrollbar.classList.add("visible");
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => scrollbar.classList.remove("visible"), 700);
+  }
+
+  window.addEventListener("scroll", () => {
+    showScrollbar();
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateThumb();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener("resize", () => {
+    updateTrackHeight();
+    updateThumb();
+  });
+
+  updateTrackHeight();
+  updateThumb();
+})();
 
 // Grain Overlay
 (() => {
@@ -226,7 +241,6 @@ updateThumb();
 (() => {
   if (isTouch) return;
 
-  // Cursor glow
   const glow = document.createElement('div');
   glow.className = 'cursor-glow';
   document.body.appendChild(glow);
@@ -247,7 +261,6 @@ updateThumb();
     requestAnimationFrame(loop);
   })();
 
-  // Magnetic Buttons
   document.querySelectorAll('.btn').forEach(btn => {
     btn.addEventListener('mousemove', e => {
       const r = btn.getBoundingClientRect();
@@ -258,7 +271,6 @@ updateThumb();
     btn.addEventListener('mouseleave', () => btn.style.transform = '');
   });
 
-  // 3D Tilt
   const MAX_DEG = 8, LERP_IN = 0.10, LERP_OUT = 0.07;
 
   document.querySelectorAll('.project-card').forEach(card => {
@@ -315,7 +327,7 @@ updateThumb();
   const simpleReveal = [
     '#about img', '.about-text h2', '.about-text p',
     '#skills h2', '#projects h2', '#contact h2', 
-    '.contact-sub', '.contact-btn', '.socials',
+    '.contact-sub', '.socials',
   ];
 
   simpleReveal.forEach(sel => {

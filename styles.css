@@ -300,18 +300,6 @@ nav {
   border-bottom: 1px solid var(--border-subtle);
 }
 
-nav .logo {
-  font-family: var(--font-heading);
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  user-select: none;
-  transition: letter-spacing 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-nav .logo:hover { letter-spacing: 1.5px; }
-nav .logo::after { content: '.'; }
-
 .nav-menu {
   list-style: none;
   display: flex;
@@ -668,6 +656,8 @@ nav a:hover::after, nav a.active::after {
   color: var(--text-muted);
   line-height: 1.78;
 }
+
+.about-text p + p { margin-top: 12px; }
 
 .about-stats {
   display: flex;
@@ -1113,7 +1103,6 @@ body.is-scrolling .grain-overlay { animation-play-state: paused; }
   }
 }
 
-/* --- Logo Styles & Animations --- */
 .nav-logo-svg .base-star, .nav-logo-svg .star-top {
   fill: #1a1a1a;
   transition: fill 0.3s ease;
@@ -1125,13 +1114,11 @@ body.is-scrolling .grain-overlay { animation-play-state: paused; }
   }
 }
 
-/* Hide the gradient layer by default, but give it a smooth transition */
 .nav-logo-svg .star-top-gradient {
   opacity: 0;
   transition: opacity 0.4s ease;
 }
 
-/* Fade in the gradient layer when at the hero section */
 nav.at-hero .nav-logo-svg .star-top-gradient {
   opacity: 1;
 }
