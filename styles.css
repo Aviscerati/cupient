@@ -212,7 +212,7 @@ nav, section, footer {
 .error-link:hover,
 .error-link:focus-visible {
   color: var(--text-primary);
-  outline: 2px solid var(--border-hover);
+  outline: 2px solid var(--accent-start);
   outline-offset: 4px;
 }
 
