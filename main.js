@@ -406,6 +406,9 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   const track = carousel?.querySelector('.skills-track');
   if (!carousel || !track) return;
 
+  const MIN_COPIES = 2;
+  const VIEWPORT_MULTIPLIER = 2;
+  const SCROLL_SPEED_PX_PER_SEC = 28;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (!track.dataset.carouselBase) track.dataset.carouselBase = track.innerHTML;
 
@@ -439,7 +442,7 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     if (!baseWidth) return;
 
     const visibleWidth = carousel.offsetWidth;
-    const copies = Math.max(2, Math.ceil((visibleWidth * 2) / baseWidth));
+    const copies = Math.max(MIN_COPIES, Math.ceil((visibleWidth * VIEWPORT_MULTIPLIER) / baseWidth));
     track.innerHTML = base.repeat(copies);
     setOffset(offset);
   }
@@ -450,7 +453,7 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     lastTime = time;
 
     if (!prefersReducedMotion.matches && !isPaused && !isDragging && baseWidth) {
-      setOffset(offset - delta * 28);
+      setOffset(offset - delta * SCROLL_SPEED_PX_PER_SEC);
     }
 
     rafId = requestAnimationFrame(tick);
