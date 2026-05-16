@@ -1,0 +1,14 @@
+{
+  "name": "cupient",
+  "url": "https://cupient.tech/",
+  "description": "Personal portfolio website of April Anderson P. Vismanos.",
+  "sitemap_url": "https://cupient.tech/sitemap.xml",
+  "human_homepage": "https://cupient.tech/",
+  "markdown_homepage": "https://cupient.tech/index.md",
+  "llms_txt": "https://cupient.tech/llms.txt",
+  "contact": {
+    "email": "cupient@proton.com",
+    "github": "https://github.com/aviderant",
+    "linkedin": "https://linkedin.com/in/cupient"
+  }
+}
