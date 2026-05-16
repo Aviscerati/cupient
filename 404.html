@@ -9,9 +9,43 @@
     <link rel="icon" type="image/svg+xml" href="logo.svg">
 </head>
 <body class="error-page">
+    <div class="scrollbar" aria-hidden="true">
+        <div class="scrollbar-track"></div>
+        <div class="scrollbar-thumb"></div>
+    </div>
+
+    <nav>
+        <a href="/" class="logo-link" aria-label="Go back to homepage">
+            <svg class="nav-logo-svg" viewBox="0 0 512 512" width="40" height="40" aria-hidden="true">
+                <defs>
+                    <linearGradient id="northstarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#E63946" />
+                        <stop offset="100%" stop-color="#F4831F" />
+                    </linearGradient>
+                </defs>
+                <path class="base-star" d="M 40 250 L 216 234 L 256 250 L 296 234 L 472 250 L 296 290 L 256 460 L 216 290 Z" />
+                <path class="star-top" d="M 256 30 L 296 210 L 256 226 L 216 210 Z" />
+                <path class="star-top-gradient" d="M 256 30 L 296 210 L 256 226 L 216 210 Z" fill="url(#northstarGrad)" />
+            </svg>
+        </a>
+
+        <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <ul class="nav-menu">
+            <li><a href="/#about">About</a></li>
+            <li><a href="/#skills">Skills</a></li>
+            <li><a href="/#projects">Projects</a></li>
+            <li><a href="/#contact">Contact</a></li>
+        </ul>
+    </nav>
+
     <main class="error-page-main">
         <div class="error-card">
-            <span class="error-eyebrow">cupient | portfolio</span>
+            <span class="error-eyebrow">cupient · portfolio</span>
             <h1 class="error-code gradient-text">404</h1>
             <p class="error-title">Page not found.</p>
             <p class="error-text">The page you’re looking for doesn’t exist or has been moved.</p>
@@ -21,5 +55,7 @@
             </div>
         </div>
     </main>
+
+    <script defer src="main.js"></script>
 </body>
 </html>
