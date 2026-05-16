@@ -5,22 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0a0a0c" />
 
-    <!-- ============================================================
-         SEO
-         ============================================================ -->
     <title>cupient</title>
     <meta name="description" content="Portfolio of April Vismanos, an IT student at CSU." />
     <meta name="author" content="April Anderson P. Vismanos" />
     <link rel="canonical" href="https://cupient.tech/" />
 
-    <meta property="og:type"        content="website" />
-    <meta property="og:url"         content="https://cupient.tech/" />
-    <meta property="og:title"       content="cupient | Portfolio" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://cupient.tech/" />
+    <meta property="og:title" content="cupient | Portfolio" />
     <meta property="og:description" content="Portfolio of April Vismanos, IT student at CSU." />
-    <meta property="og:image"       content="https://cupient.tech/optimized.jpg" />
+    <meta property="og:image" content="https://cupient.tech/optimized.jpg" />
 
-    <meta name="twitter:card"        content="summary" />
-    <meta name="twitter:title"       content="cupient | Portfolio" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="cupient | Portfolio" />
     <meta name="twitter:description" content="Portfolio of April Vismanos, IT student at CSU." />
 
     <script type="application/ld+json">
@@ -42,8 +39,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
     <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/svg+xml" href="logo.svg" />
   </head>
 
   <body>
@@ -53,7 +50,20 @@
     </div>
 
     <nav>
-      <span class="logo" title="Latin: desiring, one who longs">cupient</span>
+      <a href="#hero" class="logo-link">
+        <svg class="nav-logo-svg" viewBox="0 0 512 512" width="40" height="40">
+          <defs>
+            <linearGradient id="northstarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#E63946" />
+              <stop offset="100%" stop-color="#F4831F" />
+            </linearGradient>
+          </defs>
+          <path class="base-star" d="M 40 250 L 216 234 L 256 250 L 296 234 L 472 250 L 296 290 L 256 460 L 216 290 Z" />
+          <path class="star-top" d="M 256 30 L 296 210 L 256 226 L 216 210 Z" />
+          <!-- Add this duplicate path right on top for the gradient -->
+          <path class="star-top-gradient" d="M 256 30 L 296 210 L 256 226 L 216 210 Z" fill="url(#northstarGrad)" />
+        </svg>
+      </a>
 
       <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
         <span></span>
@@ -69,9 +79,6 @@
       </ul>
     </nav>
 
-    <!-- ============================================================
-         HERO
-         ============================================================ -->
     <section id="hero">
       <div class="hero-bg" aria-hidden="true">
         <svg class="hero-bg-svg" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
@@ -82,7 +89,6 @@
       </div>
       
       <div class="hero-content">
-        <!-- Dictionary Definition Block -->
         <div class="dict-block">
           <span class="dict-word">cu·pi·ent</span>
           <span class="dict-phonetic">/ˈkyo͞opēənt/</span>
@@ -93,9 +99,9 @@
           </ol>
         </div>
 
-        <h1>Hi, I'm<br><span>Andy</span>.</h1>
+        <h1>Hi, I'm<br><span class="gradient-text">Andy</span>.</h1>
         <p class="subtitle">I'm a first-year IT student at CSU. I build websites and study how computer systems work.</p>
-        <a href="#about">More about me</a>
+        <a href="#about" class="btn">More about me</a>
       </div>
 
       <span class="hero-side-label" aria-hidden="true">Portfolio · 2026</span>
@@ -126,9 +132,6 @@
       </div>
     </section>
 
-    <!-- ============================================================
-         ABOUT
-         ============================================================ -->
     <section id="about">
       <img src="optimized.jpg" alt="Photo of April Vismanos" width="300" height="300" loading="lazy" />
       <div class="about-text">
@@ -144,36 +147,29 @@
       </div>
     </section>
 
-    <!-- ============================================================
-         SKILLS
-         ============================================================ -->
     <section id="skills">
       <h2>Languages</h2>
       <div class="skills-grid">
-        <!-- HTML -->
         <div class="skill-card">
           <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M11 8L4 16l7 8M21 8l7 8-7 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           HTML
         </div>
-        <!-- CSS -->
         <div class="skill-card">
           <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="5" y="7"  width="22" height="3"  rx="1.5" fill="currentColor"/>
-            <rect x="5" y="14" width="16" height="3"  rx="1.5" fill="currentColor"/>
-            <rect x="5" y="21" width="10" height="3"  rx="1.5" fill="currentColor"/>
+            <rect x="5" y="7" width="22" height="3" rx="1.5" fill="currentColor"/>
+            <rect x="5" y="14" width="16" height="3" rx="1.5" fill="currentColor"/>
+            <rect x="5" y="21" width="10" height="3" rx="1.5" fill="currentColor"/>
           </svg>
           CSS
         </div>
-        <!-- JavaScript -->
         <div class="skill-card">
           <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M10 6H8a2 2 0 00-2 2v5a2 2 0 01-2 2 2 2 0 012 2v5a2 2 0 002 2h2M22 6h2a2 2 0 012 2v5a2 2 0 002 2 2 2 0 00-2 2v5a2 2 0 01-2 2h-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           JavaScript
         </div>
-        <!-- Lua -->
         <div class="skill-card">
           <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M20 8a10 10 0 100 16 8 8 0 010-16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
@@ -181,7 +177,6 @@
           </svg>
           Lua
         </div>
-        <!-- Python -->
         <div class="skill-card">
           <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M11 5h7a3 3 0 013 3v5a3 3 0 01-3 3H11a3 3 0 00-3 3v4a3 3 0 003 3h7a3 3 0 003-3M11 5A3 3 0 008 8v2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -190,7 +185,6 @@
           </svg>
           Python
         </div>
-        <!-- C -->
         <div class="skill-card">
           <svg class="skill-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M23 10a9 9 0 100 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
@@ -200,13 +194,9 @@
       </div>
     </section>
 
-    <!-- ============================================================
-         PROJECTS
-         ============================================================ -->
     <section id="projects">
       <h2>Projects</h2>
       <div class="projects-grid">
-
         <div class="project-card">
           <div class="project-preview" aria-hidden="true"></div>
           <div class="project-header">
@@ -234,22 +224,18 @@
             <span>JS</span>
           </div>
         </div>
-
       </div>
     </section>
 
-    <!-- ============================================================
-         CONTACT
-         ============================================================ -->
     <section id="contact">
       <h2>Contact</h2>
       <p class="contact-sub">Send me an email if you want to work on a project or talk about code.</p>
-      <a href="mailto:cupient@proton.com" class="contact-btn">Email me</a>
+      <a href="mailto:cupient@proton.com" class="btn">Email me</a>
 
       <div class="socials">
-        <a href="https://github.com/aviderant"      target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://linkedin.com/in/cupient"   target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="https://facebook.com/cupient"      target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a href="https://github.com/aviderant" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://linkedin.com/in/cupient" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://facebook.com/cupient" target="_blank" rel="noopener noreferrer">Facebook</a>
       </div>
     </section>
 

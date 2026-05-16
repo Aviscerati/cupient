@@ -1,24 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
   <defs>
-
-    <rect id="bg" width="512" height="512" fill="#0a0a0c" />
-    
-    <linearGradient id="cupient-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#e63946" />
-      <stop offset="100%" stop-color="#f4831f" />
+    <!-- Brand gradient for the top spike -->
+    <linearGradient id="northstarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E63946" />
+      <stop offset="100%" stop-color="#F4831F" />
     </linearGradient>
-
-    <path id="letter-c" d="M340 160 c-25 -30 -60 -48 -100 -48 c-80 0 -144 64 -144 144 c0 80 64 144 144 144 c40 0 75 -18 100 -48 l-50 -48 c-15 15 -35 24 -50 24 c-40 0 -72 -32 -72 -72 c0 -40 32 -72 72 -72 c15 0 35 9 50 24 z" />
   </defs>
 
-  <use href="#bg" />
-
-  <g transform="translate(16, 0)">
-    
-    <use href="#letter-c" fill="#e63946" transform="translate(-12, 8)" opacity="0.8" />
-    
-    <use href="#letter-c" fill="#f4831f" transform="translate(12, -8)" opacity="0.8" />
-    
-    <use href="#letter-c" fill="#f2ede7" />
-  </g>
+  <!-- Base (Slate Gray so it's visible on both dark and light browser tabs) -->
+  <path fill="#9ca3af" 
+        d="M 10 265 
+           L 205 245 
+           L 256 265 
+           L 307 245 
+           L 502 265 
+           L 307 310 
+           L 256 502 
+           L 205 310 
+           Z" />
+           
+  <!-- Floating Elongated Top Point (Pushed to the absolute top edge) -->
+  <path fill="url(#northstarGrad)" 
+        d="M 256 10 
+           L 307 220 
+           L 256 240 
+           L 205 220 
+           Z" />
 </svg>
