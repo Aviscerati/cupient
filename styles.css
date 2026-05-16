@@ -114,6 +114,97 @@ nav, section, footer {
   box-shadow: 0 4px 24px rgba(230, 57, 70, 0.18);
 }
 
+/* 404 page */
+.error-page-main {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: calc(var(--nav-h) + 40px) var(--pad-x) 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.error-card {
+  width: min(720px, 100%);
+  padding: 52px 46px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 22px 70px rgba(230, 57, 70, 0.08);
+}
+
+.error-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(230, 57, 70, 0.24), transparent 55%),
+    radial-gradient(circle at 85% 80%, rgba(244, 131, 31, 0.2), transparent 55%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.error-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.error-eyebrow {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 18px;
+}
+
+.error-code {
+  font-family: var(--font-heading);
+  font-size: clamp(72px, 18vw, 160px);
+  line-height: 0.9;
+  margin-bottom: 12px;
+  letter-spacing: -0.04em;
+}
+
+.error-title {
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.error-text {
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0 auto 28px;
+  max-width: 420px;
+}
+
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.error-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  transition: color 0.2s;
+}
+
+.error-link:hover { color: var(--text-primary); }
+
 .scrollbar {
   position: fixed;
   top: calc(var(--nav-h) + 8px);
@@ -823,6 +914,9 @@ footer span { color: var(--accent-end); }
   .nav-menu li:last-child a { border-bottom: none; }
   
   .skills-grid { grid-template-columns: 1fr; gap: 8px; }
+  .error-card { padding: 36px 24px; }
+  .error-actions { flex-direction: column; }
+  .error-eyebrow { letter-spacing: 0.25em; }
 }
 
 @media (min-width: 640px) {
