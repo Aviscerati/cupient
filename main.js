@@ -207,17 +207,17 @@ function subscribeToScroll(handler) {
 
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
-  let glowRafId = null;
+  let glowRafId = -1;
 
   const paintGlow = () => {
-    glowRafId = null;
-    glow.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+    glowRafId = -1;
+    glow.style.transform = `translate3d(${mouseX - 290}px, ${mouseY - 290}px, 0)`;
   };
 
   document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    if (glowRafId !== null) return;
+    if (glowRafId !== -1) return;
     glowRafId = requestAnimationFrame(paintGlow);
   });
   paintGlow();
