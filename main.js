@@ -1,4 +1,39 @@
 const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+// Keep a stable viewport height on mobile to avoid URL-bar scroll resize jumps.
+(() => {
+  const root = document.documentElement;
+  const ORIENTATION_SETTLE_DELAY_MS = 180;
+  const WIDTH_CHANGE_THRESHOLD_PX = 2;
+  const getViewportHeight = () => {
+    const viewportHeight = window.visualViewport?.height;
+    if (Number.isFinite(viewportHeight) && viewportHeight > 0) return viewportHeight;
+    return window.innerHeight;
+  };
+  let lastWidth = Math.round(window.innerWidth);
+
+  function setStableViewportHeight() {
+    const viewportHeight = Math.round(getViewportHeight());
+    if (viewportHeight > 0) root.style.setProperty('--stable-vh', `${viewportHeight}px`);
+  }
+
+  setStableViewportHeight();
+
+  window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+      lastWidth = Math.round(window.innerWidth);
+      setStableViewportHeight();
+    }, ORIENTATION_SETTLE_DELAY_MS);
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    const currentWidth = Math.round(window.innerWidth);
+    if (Math.abs(currentWidth - lastWidth) < WIDTH_CHANGE_THRESHOLD_PX) return;
+    lastWidth = currentWidth;
+    setStableViewportHeight();
+  }, { passive: true });
+})();
+
 const getNavHeight = () => {
   const nav = document.querySelector('nav');
   if (nav && nav.offsetHeight) return nav.offsetHeight;

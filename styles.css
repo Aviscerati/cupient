@@ -29,9 +29,16 @@
   --fs-link: 14px;
 
   --nav-h: 54px;
+  --stable-vh: 100vh;
   --pad-x: 5%;
   --pad-y: 52px;
   --heading-gap: 24px;
+}
+
+@supports (height: 100svh) {
+  :root {
+    --stable-vh: 100svh;
+  }
 }
 
 *, *::before, *::after {
@@ -147,7 +154,7 @@ nav, section, footer {
 
 /* 404 page */
 .error-page-main {
-  min-height: calc(100vh - var(--nav-h));
+  min-height: calc(var(--stable-vh) - var(--nav-h));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,12 +162,6 @@ nav, section, footer {
   padding: calc(var(--nav-h) + 20px) var(--pad-x) calc(var(--pad-y) + 20px);
   position: relative;
   z-index: 1;
-}
-
-@supports (height: 100svh) {
-  .error-page-main {
-    min-height: calc(100svh - var(--nav-h));
-  }
 }
 
 .error-card {
@@ -295,7 +296,7 @@ nav, section, footer {
 }
 
 section {
-  min-height: 100svh;
+  min-height: var(--stable-vh);
   display: flex;
   flex-direction: column;
   justify-content: safe center;
@@ -406,7 +407,7 @@ nav a:hover::after, nav a.active::after {
 #hero {
   position: relative;
   overflow: clip; 
-  min-height: calc(100svh - var(--nav-h));
+  min-height: calc(var(--stable-vh) - var(--nav-h));
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1167,7 +1168,7 @@ footer span { color: var(--accent-end); }
   }
   .skills-carousel { --carousel-card-width: clamp(200px, 40vw, 250px); --carousel-gap: 12px; }
   .projects-grid { grid-template-columns: 1fr; gap: 16px; }
-  #hero { min-height: calc(100svh - var(--nav-h)); justify-content: center; }
+  #hero { min-height: calc(var(--stable-vh) - var(--nav-h)); justify-content: center; }
   #hero p.subtitle, .contact-sub { max-width: 380px; }
   
   .hero-badge { width: 90px; height: 90px; bottom: calc(40px + 28px); }
@@ -1193,7 +1194,7 @@ footer span { color: var(--accent-end); }
     --nav-h: 70px;
   }
 
-  #hero { flex-direction: column; text-align: left; align-items: flex-start; justify-content: center; min-height: calc(100svh - var(--nav-h)); }
+  #hero { flex-direction: column; text-align: left; align-items: flex-start; justify-content: center; min-height: calc(var(--stable-vh) - var(--nav-h)); }
   
   .dict-block { margin-bottom: 42px; max-width: 500px; }
   .dict-word { font-size: 28px; }
