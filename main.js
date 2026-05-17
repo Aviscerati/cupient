@@ -75,8 +75,18 @@ const lenis = (!isTouch && typeof window.Lenis === 'function')
   : null;
 const hasLenis = Boolean(lenis);
 
-if (!hasLenis && isTouch && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.documentElement.classList.add('smooth-scroll');
+if (!hasLenis && isTouch) {
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const updateSmoothScrollPreference = () => {
+    document.documentElement.classList.toggle('smooth-scroll', !reducedMotionQuery.matches);
+  };
+  updateSmoothScrollPreference();
+
+  if (typeof reducedMotionQuery.addEventListener === 'function') {
+    reducedMotionQuery.addEventListener('change', updateSmoothScrollPreference);
+  } else if (typeof reducedMotionQuery.addListener === 'function') {
+    reducedMotionQuery.addListener(updateSmoothScrollPreference);
+  }
 }
 
 function getNativeScrollSnapshot() {
