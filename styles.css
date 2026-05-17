@@ -639,6 +639,10 @@ nav a:hover::after, nav a.active::after {
   animation: ticker-scroll 28s linear infinite;
 }
 
+.hero-ticker.paused .hero-ticker-inner {
+  animation-play-state: paused;
+}
+
 .hero-ticker-inner span {
   font-size: 9px;
   font-weight: 700;
