@@ -1,5 +1,12 @@
 const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-const lenis = typeof window.Lenis === 'function' ? new window.Lenis() : null;
+const navHeight = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 54;
+const lenis = typeof window.Lenis === 'function'
+  ? new window.Lenis({
+      autoRaf: true,
+      anchors: { offset: -navHeight },
+      stopInertiaOnNavigate: true,
+    })
+  : null;
 const hasLenis = Boolean(lenis);
 
 function getNativeScrollSnapshot() {
@@ -41,14 +48,6 @@ function subscribeToScroll(handler) {
   };
 }
 
-function raf(time) {
-  if (!hasLenis) return;
-  lenis.raf(time);
-  requestAnimationFrame(raf);
-}
-
-if (hasLenis) requestAnimationFrame(raf);
-
 // Navbar
 (() => {
   const toggle = document.querySelector('.nav-toggle');
@@ -67,32 +66,6 @@ if (hasLenis) requestAnimationFrame(raf);
 
   document.addEventListener('click', e => {
     if (!toggle.contains(e.target) && !menu.contains(e.target)) setMenuState(false);
-  });
-})();
-
-// Smooth Anchor Scroll
-(() => {
-  document.querySelectorAll('a[href^="#"]').forEach((link) => {
-    link.addEventListener("click", function (e) {
-      const href = this.getAttribute("href");
-      e.preventDefault();
-      if (!href || href === "#") return;
-      const target = document.querySelector(href);
-      if (!target) return;
-
-      if (hasLenis) {
-        lenis.scrollTo(target, { duration: 1.2 });
-        return;
-      }
-
-      try {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } catch (_) {
-        console.debug('Smooth scroll options unsupported; using default scrollIntoView.');
-        // Fallback for browsers that do not support scroll options.
-        target.scrollIntoView();
-      }
-    });
   });
 })();
 
