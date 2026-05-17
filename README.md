@@ -1,5 +1,3 @@
-# Hello.
-
 ## Agent readiness
 
 This site includes lightweight agent-readiness files and metadata:
