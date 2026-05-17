@@ -1075,55 +1075,140 @@ nav a:hover::after, nav a.active::after {
 }
 
 #contact {
-  text-align: center;
-  align-items: center;
-  padding-bottom: 110px;
+  align-items: stretch;
+  gap: 26px;
 }
 
 .contact-sub {
   font-size: var(--fs-body);
   color: var(--text-muted);
   line-height: 1.75;
-  max-width: 280px;
-  margin: 0 auto 28px;
+  max-width: 520px;
+  margin: 0;
 }
 
-#contact .btn { margin-bottom: 40px; }
+.contact-grid {
+  display: grid;
+  gap: 18px;
+}
 
-.socials {
+.contact-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 22px 20px;
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 24px;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.socials a {
+.contact-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.contact-value {
+  color: var(--text-primary);
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.contact-value:hover { color: var(--accent-end); }
+
+.contact-card p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-size: var(--fs-body);
+}
+
+.contact-actions {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-links a {
+  padding: 9px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
   color: var(--text-muted);
   text-decoration: none;
   font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.4px;
+  font-weight: 600;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+
+.contact-links a:hover {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  background-color: rgba(255,255,255,0.03);
+}
+
+footer {
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 18px;
+  padding: 30px var(--pad-x) calc(24px + env(safe-area-inset-bottom));
+  background-color: #121218;
+  text-align: left;
+  font-size: 12px;
+  color: #3a3a40;
+}
+
+.footer-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.footer-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.footer-brand p {
+  margin: 0;
+  color: #666670;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.footer-links,
+.footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 14px;
+}
+
+.footer-links a,
+.footer-socials a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.2px;
   transition: color 0.2s;
 }
 
-.socials a:hover { color: var(--text-primary); }
-
-footer {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  padding: 14px var(--pad-x) calc(14px + env(safe-area-inset-bottom));
-  text-align: center;
-  font-size: 12px;
-  color: #3a3a40;
-  background-color: var(--bg-card);
-  border-top: 1px solid var(--border-subtle);
-  transform: translateY(calc(100% + env(safe-area-inset-bottom)));
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 50;
+.footer-links a:hover,
+.footer-socials a:hover {
+  color: var(--text-primary);
 }
 
-footer.visible { transform: translateY(0); }
-footer span { color: var(--accent-end); }
+.footer-brand span { color: var(--accent-end); }
 
 @media (max-width: 639px) {
   .nav-toggle { display: flex; }
@@ -1233,16 +1318,19 @@ footer span { color: var(--accent-end); }
   .projects-grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
   .project-preview { height: 150px; }
   
-  .contact-sub { max-width: 480px; font-size: 18px; margin-bottom: 36px; }
-  #contact .btn { margin-bottom: 60px; }
-  
-  .socials { gap: 36px; }
-  .socials a { font-size: 14px; }
+  .contact-grid { grid-template-columns: 1.1fr 1fr; gap: 22px; }
+  .contact-sub { max-width: 600px; font-size: 18px; }
+  .contact-links a { font-size: 14px; }
+  .footer-grid {
+    grid-template-columns: 1.4fr auto auto;
+    align-items: start;
+    gap: 22px;
+  }
   
   nav .logo { font-size: 22px; }
   nav a { font-size: 16px; }
   .nav-menu { gap: 40px; }
-  footer { padding: 18px var(--pad-x); font-size: 13px; }
+  footer { padding: 26px var(--pad-x) 22px; font-size: 13px; }
 }
 
 @media (min-width: 1440px) {
