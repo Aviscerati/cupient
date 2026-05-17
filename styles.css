@@ -1118,8 +1118,6 @@ nav a:hover::after, nav a.active::after {
   text-decoration: none;
 }
 
-.contact-value:hover { color: var(--accent-end); }
-
 .contact-card p {
   margin: 0;
   color: var(--text-muted);
