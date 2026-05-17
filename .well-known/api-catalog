@@ -1,0 +1,25 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://cupient.tech/",
+      "service-doc": [
+        {
+          "href": "https://cupient.tech/index.md",
+          "type": "text/markdown"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://cupient.tech/agent.json",
+          "type": "application/json"
+        }
+      ],
+      "alternate": [
+        {
+          "href": "https://cupient.tech/llms.txt",
+          "type": "text/plain"
+        }
+      ]
+    }
+  ]
+}

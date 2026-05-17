@@ -1,0 +1,40 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/server-card.json",
+  "serverInfo": {
+    "name": "cupient",
+    "version": "1.0.0",
+    "description": "Personal portfolio of April Anderson P. Vismanos (cupient), an IT student at CSU.",
+    "homepage": "https://cupient.tech/"
+  },
+  "transport": {
+    "type": "none"
+  },
+  "capabilities": {
+    "resources": {
+      "items": [
+        {
+          "uri": "https://cupient.tech/index.md",
+          "name": "Portfolio (Markdown)",
+          "description": "Markdown version of the portfolio homepage for agents.",
+          "mimeType": "text/markdown"
+        },
+        {
+          "uri": "https://cupient.tech/llms.txt",
+          "name": "LLMs.txt",
+          "description": "Plain-text summary for large language models.",
+          "mimeType": "text/plain"
+        },
+        {
+          "uri": "https://cupient.tech/agent.json",
+          "name": "Agent Discovery JSON",
+          "description": "Structured metadata for agent discovery.",
+          "mimeType": "application/json"
+        }
+      ]
+    }
+  },
+  "contact": {
+    "email": "andy@cupient.tech",
+    "github": "https://github.com/cupient"
+  }
+}
