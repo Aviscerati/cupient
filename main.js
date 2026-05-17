@@ -149,26 +149,6 @@ function subscribeToScroll(handler) {
   });
 })();
 
-// Footer Observer
-(() => {
-  const footer = document.querySelector("footer");
-  const contact = document.querySelector("#contact");
-
-  if (!footer || !contact) return;
-  if (!("IntersectionObserver" in window)) {
-    footer.classList.add("visible");
-    return;
-  }
-
-  const observerOptions = isTouch
-    ? { threshold: 0.6, rootMargin: '0px 0px -1px 0px' }
-    : { threshold: 1.0 };
-
-  new IntersectionObserver(([entry]) => {
-    footer.classList.toggle("visible", entry.isIntersecting);
-  }, observerOptions).observe(contact);
-})();
-
 // Scrollbar
 (() => {
   if (isTouch) return;
@@ -331,14 +311,14 @@ function subscribeToScroll(handler) {
   const simpleReveal = [
     '#about img', '.about-text h2', '.about-text p',
     '#skills h2', '#projects h2', '#contact h2', 
-    '.contact-sub', '.socials',
+    '.contact-sub', '.contact-grid',
   ];
 
   simpleReveal.forEach(sel => {
     document.querySelectorAll(sel).forEach(el => el.classList.add(sel === '#about img' ? 'reveal-left' : 'reveal'));
   });
 
-  ['.skill-card', '.project-card'].forEach(sel => {
+  ['.skill-card', '.project-card', '.contact-card'].forEach(sel => {
     document.querySelectorAll(sel).forEach((el, i) => {
       el.classList.add('reveal');
       el.style.transitionDelay = `${i * 0.09}s`;
