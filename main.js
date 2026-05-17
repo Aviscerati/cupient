@@ -65,7 +65,11 @@ if (hasLenis) requestAnimationFrame(raf);
         return;
       }
 
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      try {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (_) {
+        target.scrollIntoView();
+      }
     });
   });
 })();
