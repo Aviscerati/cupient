@@ -101,11 +101,15 @@ requestAnimationFrame(raf);
 
   window.addEventListener("resize", () => {
     updateTrackHeight();
-    updateThumb(lastScroll, lastLimit);
+    const fallbackLimit = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    updateThumb(lastScroll, lastLimit || fallbackLimit);
   });
 
   updateTrackHeight();
-  updateThumb(lenis.scroll || 0, lenis.limit || 0);
+  const fallbackLimit = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  const initialScroll = Number.isFinite(lenis.scroll) ? lenis.scroll : (window.scrollY || 0);
+  const initialLimit = Number.isFinite(lenis.limit) ? lenis.limit : fallbackLimit;
+  updateThumb(initialScroll, initialLimit);
 })();
 
 // Grain Overlay
