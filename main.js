@@ -1,12 +1,33 @@
 const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-const lenis = new Lenis();
+const lenis = typeof window.Lenis === 'function' ? new window.Lenis() : null;
+const hasLenis = Boolean(lenis);
+
+function getNativeScrollSnapshot() {
+  const scroll = window.scrollY || document.documentElement.scrollTop || 0;
+  const limit = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  return { scroll, limit };
+}
+
+function subscribeToScroll(handler) {
+  if (hasLenis) {
+    lenis.on('scroll', handler);
+    return () => {
+      if (typeof lenis.off === 'function') lenis.off('scroll', handler);
+    };
+  }
+
+  const nativeHandler = () => handler(getNativeScrollSnapshot());
+  window.addEventListener('scroll', nativeHandler, { passive: true });
+  return () => window.removeEventListener('scroll', nativeHandler);
+}
 
 function raf(time) {
+  if (!hasLenis) return;
   lenis.raf(time);
   requestAnimationFrame(raf);
 }
 
-requestAnimationFrame(raf);
+if (hasLenis) requestAnimationFrame(raf);
 
 // Navbar
 (() => {
@@ -37,7 +58,14 @@ requestAnimationFrame(raf);
       e.preventDefault();
       if (!href || href === "#") return;
       const target = document.querySelector(href);
-      if (target) lenis.scrollTo(target, { duration: 1.2 });
+      if (!target) return;
+
+      if (hasLenis) {
+        lenis.scrollTo(target, { duration: 1.2 });
+        return;
+      }
+
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 })();
@@ -92,12 +120,13 @@ requestAnimationFrame(raf);
     hideTimer = setTimeout(() => scrollbar.classList.remove("visible"), 700);
   }
 
-  lenis.on('scroll', (e) => {
+  const handleScroll = (e) => {
     showScrollbar();
     lastScroll = e.scroll;
     lastLimit = e.limit;
     updateThumb(lastScroll, lastLimit);
-  });
+  };
+  subscribeToScroll(handleScroll);
 
   window.addEventListener("resize", () => {
     updateTrackHeight();
@@ -106,9 +135,9 @@ requestAnimationFrame(raf);
   });
 
   updateTrackHeight();
-  const fallbackLimit = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-  const initialScroll = Number.isFinite(lenis.scroll) ? lenis.scroll : (window.scrollY || 0);
-  const initialLimit = Number.isFinite(lenis.limit) ? lenis.limit : fallbackLimit;
+  const initialSnapshot = getNativeScrollSnapshot();
+  const initialScroll = hasLenis && Number.isFinite(lenis.scroll) ? lenis.scroll : initialSnapshot.scroll;
+  const initialLimit = hasLenis && Number.isFinite(lenis.limit) ? lenis.limit : initialSnapshot.limit;
   updateThumb(initialScroll, initialLimit);
 })();
 
@@ -532,7 +561,7 @@ requestAnimationFrame(raf);
     requestAnimationFrame(updateActive);
   }
 
-  window.addEventListener('scroll', requestUpdate, { passive: true });
+  subscribeToScroll(requestUpdate);
   window.addEventListener('resize', requestUpdate);
   requestUpdate();
 })();
