@@ -233,8 +233,8 @@ function subscribeToScroll(handler) {
 
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
-  const IDLE_FRAME_ID = -1;
-  const GLOW_HALF_SIZE = 290;
+  const IDLE_FRAME_ID = null;
+  const GLOW_HALF_SIZE = 290; // 580px glow diameter / 2, used to center on cursor
   let glowAnimationFrameId = IDLE_FRAME_ID;
 
   const paintGlow = () => {
