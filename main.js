@@ -1,4 +1,14 @@
 const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const saveDataEnabled = navigator.connection?.saveData === true;
+const REDUCED_EFFECTS_MEMORY_THRESHOLD_GB = 4;
+const REDUCED_EFFECTS_CPU_THRESHOLD = 4;
+const ANIMATION_VISIBILITY_THRESHOLD = 0.1; // 10% visibility is enough to resume decorative animation work.
+const rootStyles = getComputedStyle(document.documentElement);
+const deviceMemory = Number(navigator.deviceMemory);
+const hardwareConcurrency = Number(navigator.hardwareConcurrency);
+const isLowEndDevice = (Number.isFinite(deviceMemory) && deviceMemory > 0 && deviceMemory <= REDUCED_EFFECTS_MEMORY_THRESHOLD_GB)
+  || (Number.isFinite(hardwareConcurrency) && hardwareConcurrency > 0 && hardwareConcurrency <= REDUCED_EFFECTS_CPU_THRESHOLD);
 
 // Keep a stable viewport height on mobile to avoid URL-bar scroll resize jumps.
 (() => {
@@ -208,7 +218,7 @@ function subscribeToScroll(handler) {
 
 // Grain Overlay
 (() => {
-  if (isTouch || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (isTouch || isReducedMotion || saveDataEnabled || isLowEndDevice || window.innerWidth < 1024) return;
   const grain = document.createElement('div');
   grain.className = 'grain-overlay';
   document.body.appendChild(grain);
@@ -221,9 +231,32 @@ function subscribeToScroll(handler) {
   }, { passive: true });
 })();
 
+// Pause hero ticker animation when offscreen or tab is hidden.
+(() => {
+  const ticker = document.querySelector('.hero-ticker');
+  if (!ticker || typeof IntersectionObserver !== 'function') return;
+
+  let isTickerVisible = true;
+  const updateTickerState = () => {
+    ticker.classList.toggle('paused', !isTickerVisible || document.hidden);
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    const entry = entries[0];
+    if (!entry) return;
+    isTickerVisible = entry.isIntersecting;
+    updateTickerState();
+  }, { threshold: ANIMATION_VISIBILITY_THRESHOLD });
+
+  observer.observe(ticker);
+  document.addEventListener('visibilitychange', updateTickerState, { passive: true });
+  window.addEventListener('pagehide', () => observer.disconnect(), { once: true });
+  updateTickerState();
+})();
+
 // Cursor Glow & Desktop Hover Effects
 (() => {
-  if (isTouch) return;
+  if (isTouch || isReducedMotion || saveDataEnabled || !window.matchMedia('(pointer: fine)').matches) return;
 
   const glow = document.createElement('div');
   glow.className = 'cursor-glow';
@@ -231,19 +264,23 @@ function subscribeToScroll(handler) {
 
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
-  let curX = mouseX, curY = mouseY;
+  const NO_PENDING_FRAME = null;
+  const glowSize = Number.parseFloat(rootStyles.getPropertyValue('--cursor-glow-size'));
+  const GLOW_HALF_SIZE = Number.isFinite(glowSize) && glowSize > 0 ? glowSize / 2 : 290;
+  let glowAnimationFrameId = NO_PENDING_FRAME;
+
+  const paintGlow = () => {
+    glowAnimationFrameId = NO_PENDING_FRAME;
+    glow.style.transform = `translate3d(${mouseX - GLOW_HALF_SIZE}px, ${mouseY - GLOW_HALF_SIZE}px, 0)`;
+  };
 
   document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+    if (glowAnimationFrameId !== NO_PENDING_FRAME) return;
+    glowAnimationFrameId = requestAnimationFrame(paintGlow);
   });
-
-  (function loop() {
-    curX += (mouseX - curX) * 0.07;
-    curY += (mouseY - curY) * 0.07;
-    glow.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
-    requestAnimationFrame(loop);
-  })();
+  paintGlow();
 
   document.querySelectorAll('.btn').forEach(btn => {
     btn.addEventListener('mousemove', e => {
@@ -294,16 +331,6 @@ function subscribeToScroll(handler) {
       if (!rafId) rafId = requestAnimationFrame(tick);
     });
   });
-})();
-
-// Image Preloader
-(() => {
-  const aboutImg = document.querySelector('#about img');
-  if (!aboutImg || !aboutImg.src) return;
-  const preloader = new Image();
-  preloader.decoding = 'async';
-  preloader.src = aboutImg.src;
-  preloader.decode().catch(() => {});
 })();
 
 // Scroll Reveal
@@ -405,6 +432,7 @@ function subscribeToScroll(handler) {
   let startOffset = 0;
   let lastTime = 0;
   let allowMotion = !prefersReducedMotion.matches;
+  let isVisible = true;
 
   function getGapSize() {
     const styles = window.getComputedStyle(track);
@@ -453,7 +481,7 @@ function subscribeToScroll(handler) {
     const delta = (time - lastTime) / 1000;
     lastTime = time;
 
-    if (allowMotion && !isPaused && !isDragging && baseWidth) {
+    if (allowMotion && isVisible && !document.hidden && !isPaused && !isDragging && baseWidth) {
       setOffset(offset - delta * SCROLL_SPEED_PX_PER_SEC);
     }
 
@@ -481,7 +509,7 @@ function subscribeToScroll(handler) {
     stopTick();
     updateMotionState();
     setupCarousel();
-    if (allowMotion) startTick();
+    if (allowMotion && isVisible && !document.hidden) startTick();
   }
 
   function handlePointerDown(e) {
@@ -535,6 +563,27 @@ function subscribeToScroll(handler) {
   } else if (typeof prefersReducedMotion.addListener === 'function') {
     prefersReducedMotion.addListener(handleMotionChange);
   }
+
+  const visibilityObserver = new IntersectionObserver((entries) => {
+    const entry = entries[0];
+    if (!entry) return;
+    isVisible = entry.isIntersecting;
+    if (allowMotion && isVisible && !document.hidden) {
+      startTick();
+    } else {
+      stopTick();
+    }
+  }, { threshold: ANIMATION_VISIBILITY_THRESHOLD });
+  visibilityObserver.observe(carousel);
+
+  document.addEventListener('visibilitychange', () => {
+    if (allowMotion && isVisible && !document.hidden) {
+      startTick();
+    } else {
+      stopTick();
+    }
+  }, { passive: true });
+  window.addEventListener('pagehide', () => visibilityObserver.disconnect(), { once: true });
 
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(updateCarousel).catch(() => {});
