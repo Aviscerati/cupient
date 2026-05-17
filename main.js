@@ -14,7 +14,7 @@ const saveDataEnabled = navigator.connection?.saveData === true;
   };
   let lastHeight = 0;
   let touchMaxHeight = 0;
-  let rafId = null;
+  let rafId = 0;
   let forceOnNextFrame = false;
 
   function setStableViewportHeight(force = false) {
@@ -207,17 +207,18 @@ function subscribeToScroll(handler) {
 
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
-  let rafId = 0;
+  let glowRafId = null;
 
   const paintGlow = () => {
-    rafId = null;
+    glowRafId = null;
     glow.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
   };
 
   document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    if (!rafId) rafId = requestAnimationFrame(paintGlow);
+    if (glowRafId !== null) return;
+    glowRafId = requestAnimationFrame(paintGlow);
   });
   paintGlow();
 
