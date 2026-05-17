@@ -3,6 +3,7 @@ const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').ma
 const saveDataEnabled = navigator.connection?.saveData === true;
 const LOW_END_MEMORY_GB = 4;
 const LOW_END_CPU_CORES = 4;
+const rootStyles = getComputedStyle(document.documentElement);
 const deviceMemory = Number(navigator.deviceMemory);
 const hardwareConcurrency = Number(navigator.hardwareConcurrency);
 const isLowEndDevice = (Number.isFinite(deviceMemory) && deviceMemory > 0 && deviceMemory <= LOW_END_MEMORY_GB)
@@ -244,7 +245,7 @@ function subscribeToScroll(handler) {
     if (!entry) return;
     isTickerVisible = entry.isIntersecting;
     updateTickerState();
-  }, { threshold: 0.05 });
+  }, { threshold: 0.1 });
 
   observer.observe(ticker);
   document.addEventListener('visibilitychange', updateTickerState, { passive: true });
@@ -263,7 +264,7 @@ function subscribeToScroll(handler) {
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
   const NO_PENDING_FRAME = null;
-  const glowSize = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cursor-glow-size'));
+  const glowSize = Number.parseFloat(rootStyles.getPropertyValue('--cursor-glow-size'));
   const GLOW_HALF_SIZE = Number.isFinite(glowSize) && glowSize > 0 ? glowSize / 2 : 290;
   let glowAnimationFrameId = NO_PENDING_FRAME;
 
@@ -571,7 +572,7 @@ function subscribeToScroll(handler) {
     } else {
       stopTick();
     }
-  }, { threshold: 0.05 });
+  }, { threshold: 0.1 });
   visibilityObserver.observe(carousel);
 
   document.addEventListener('visibilitychange', () => {
