@@ -1,5 +1,5 @@
 const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-const navHeight = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 54;
+const navHeight = 54;
 const lenis = typeof window.Lenis === 'function'
   ? new window.Lenis({
       autoRaf: true,
