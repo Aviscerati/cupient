@@ -1,10 +1,12 @@
 const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const saveDataEnabled = navigator.connection?.saveData === true;
+const LOW_END_MEMORY_GB = 4;
+const LOW_END_CPU_CORES = 4;
 const deviceMemory = Number(navigator.deviceMemory);
 const hardwareConcurrency = Number(navigator.hardwareConcurrency);
-const isLowEndDevice = (Number.isFinite(deviceMemory) && deviceMemory > 0 && deviceMemory <= 4)
-  || (Number.isFinite(hardwareConcurrency) && hardwareConcurrency > 0 && hardwareConcurrency <= 4);
+const isLowEndDevice = (Number.isFinite(deviceMemory) && deviceMemory > 0 && deviceMemory <= LOW_END_MEMORY_GB)
+  || (Number.isFinite(hardwareConcurrency) && hardwareConcurrency > 0 && hardwareConcurrency <= LOW_END_CPU_CORES);
 
 // Keep a stable viewport height on mobile to avoid URL-bar scroll resize jumps.
 (() => {
@@ -260,19 +262,20 @@ function subscribeToScroll(handler) {
 
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
-  const IDLE_FRAME_ID = null;
-  const GLOW_HALF_SIZE = 290; // 580px glow diameter / 2, used to center on cursor
-  let glowAnimationFrameId = IDLE_FRAME_ID;
+  const NO_PENDING_FRAME = null;
+  const glowSize = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cursor-glow-size'));
+  const GLOW_HALF_SIZE = Number.isFinite(glowSize) && glowSize > 0 ? glowSize / 2 : 290;
+  let glowAnimationFrameId = NO_PENDING_FRAME;
 
   const paintGlow = () => {
-    glowAnimationFrameId = IDLE_FRAME_ID;
+    glowAnimationFrameId = NO_PENDING_FRAME;
     glow.style.transform = `translate3d(${mouseX - GLOW_HALF_SIZE}px, ${mouseY - GLOW_HALF_SIZE}px, 0)`;
   };
 
   document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    if (glowAnimationFrameId !== IDLE_FRAME_ID) return;
+    if (glowAnimationFrameId !== NO_PENDING_FRAME) return;
     glowAnimationFrameId = requestAnimationFrame(paintGlow);
   });
   paintGlow();

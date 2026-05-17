@@ -31,6 +31,7 @@
   --pad-x: 5%;
   --pad-y: 52px;
   --heading-gap: 24px;
+  --cursor-glow-size: 580;
   --section-intrinsic-size: 900px;
   --about-intrinsic-size: 780px;
   --skills-intrinsic-size: 980px;
@@ -1401,8 +1402,8 @@ body.is-scrolling .grain-overlay { animation-play-state: paused; }
 
 .cursor-glow {
   position: fixed;
-  width: 580px;
-  height: 580px;
+  width: calc(var(--cursor-glow-size) * 1px);
+  height: calc(var(--cursor-glow-size) * 1px);
   border-radius: 50%;
   background: radial-gradient(circle, rgba(230, 57, 70, 0.07) 0%, rgba(244, 131, 31, 0.04) 35%, transparent 70%);
   pointer-events: none;
