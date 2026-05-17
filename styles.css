@@ -32,6 +32,10 @@
   --pad-y: 52px;
   --heading-gap: 24px;
   --section-intrinsic-size: 900px;
+  --about-intrinsic-size: 780px;
+  --skills-intrinsic-size: 980px;
+  --projects-intrinsic-size: 760px;
+  --contact-intrinsic-size: 760px;
 }
 
 @supports (height: 100svh) {
@@ -317,6 +321,22 @@ section {
 section:not(#hero) {
   content-visibility: auto;
   contain-intrinsic-size: 1px var(--section-intrinsic-size);
+}
+
+#about {
+  --section-intrinsic-size: var(--about-intrinsic-size);
+}
+
+#skills {
+  --section-intrinsic-size: var(--skills-intrinsic-size);
+}
+
+#projects {
+  --section-intrinsic-size: var(--projects-intrinsic-size);
+}
+
+#contact {
+  --section-intrinsic-size: var(--contact-intrinsic-size);
 }
 
 section h2 {
