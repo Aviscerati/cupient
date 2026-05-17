@@ -41,7 +41,7 @@ const getNavHeight = () => {
   const cssNavHeight = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'));
   return Number.isFinite(cssNavHeight) ? cssNavHeight : 54;
 };
-const lenis = typeof window.Lenis === 'function'
+const lenis = (!isTouch && typeof window.Lenis === 'function')
   ? new window.Lenis({
       autoRaf: true,
       anchors: { offset: -getNavHeight() },
@@ -121,13 +121,18 @@ function subscribeToScroll(handler) {
     return;
   }
 
+  const observerOptions = isTouch
+    ? { threshold: 0.6, rootMargin: '0px 0px -1px 0px' }
+    : { threshold: 1.0 };
+
   new IntersectionObserver(([entry]) => {
     footer.classList.toggle("visible", entry.isIntersecting);
-  }, { threshold: 1.0 }).observe(contact);
+  }, observerOptions).observe(contact);
 })();
 
 // Scrollbar
 (() => {
+  if (isTouch) return;
   const scrollbar = document.querySelector(".scrollbar");
   const thumb = document.querySelector(".scrollbar-thumb");
   if (!scrollbar || !thumb) return;
@@ -184,6 +189,7 @@ function subscribeToScroll(handler) {
 
 // Grain Overlay
 (() => {
+  if (isTouch || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const grain = document.createElement('div');
   grain.className = 'grain-overlay';
   document.body.appendChild(grain);
