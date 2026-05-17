@@ -87,8 +87,8 @@ if (hasLenis) requestAnimationFrame(raf);
 
       try {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } catch (err) {
-        console.debug('Smooth scroll options unsupported; using default scrollIntoView.', err);
+      } catch (_) {
+        console.debug('Smooth scroll options unsupported; using default scrollIntoView.');
         // Fallback for browsers that do not support scroll options.
         target.scrollIntoView();
       }
@@ -153,7 +153,7 @@ if (hasLenis) requestAnimationFrame(raf);
     updateThumb(lastScroll, lastLimit);
   };
   const unsubscribeScroll = subscribeToScroll(handleScroll);
-  window.addEventListener('beforeunload', unsubscribeScroll, { once: true });
+  window.addEventListener('pagehide', unsubscribeScroll, { once: true });
 
   window.addEventListener("resize", () => {
     updateTrackHeight();
@@ -589,7 +589,7 @@ if (hasLenis) requestAnimationFrame(raf);
   }
 
   const unsubscribeScroll = subscribeToScroll(requestUpdate);
-  window.addEventListener('beforeunload', unsubscribeScroll, { once: true });
+  window.addEventListener('pagehide', unsubscribeScroll, { once: true });
   window.addEventListener('resize', requestUpdate);
   requestUpdate();
 })();
