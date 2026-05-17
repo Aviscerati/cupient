@@ -1,4 +1,6 @@
 const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const saveDataEnabled = navigator.connection?.saveData === true;
 
 // Keep a stable viewport height on mobile to avoid URL-bar scroll resize jumps.
 (() => {
@@ -60,22 +62,10 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   }
 })();
 
-const getNavHeight = () => {
-  const nav = document.querySelector('nav');
-  if (nav && nav.offsetHeight) return nav.offsetHeight;
-  const cssNavHeight = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'));
-  return Number.isFinite(cssNavHeight) ? cssNavHeight : 54;
-};
-const lenis = (!isTouch && typeof window.Lenis === 'function')
-  ? new window.Lenis({
-      autoRaf: true,
-      anchors: { offset: -getNavHeight() },
-      stopInertiaOnNavigate: true,
-    })
-  : null;
-const hasLenis = Boolean(lenis);
+const lenis = null;
+const hasLenis = false;
 
-if (!hasLenis && isTouch) {
+if (!hasLenis) {
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const updateSmoothScrollPreference = () => {
     document.documentElement.classList.toggle('smooth-scroll', !reducedMotionQuery.matches);
@@ -208,7 +198,7 @@ function subscribeToScroll(handler) {
 
 // Grain Overlay
 (() => {
-  if (isTouch || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (isTouch || isReducedMotion || saveDataEnabled || window.innerWidth < 1024) return;
   const grain = document.createElement('div');
   grain.className = 'grain-overlay';
   document.body.appendChild(grain);
@@ -223,7 +213,7 @@ function subscribeToScroll(handler) {
 
 // Cursor Glow & Desktop Hover Effects
 (() => {
-  if (isTouch) return;
+  if (isTouch || isReducedMotion || saveDataEnabled || !window.matchMedia('(pointer: fine)').matches) return;
 
   const glow = document.createElement('div');
   glow.className = 'cursor-glow';
@@ -231,19 +221,19 @@ function subscribeToScroll(handler) {
 
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
-  let curX = mouseX, curY = mouseY;
+  let rafId = 0;
+
+  const paintGlow = () => {
+    rafId = 0;
+    glow.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+  };
 
   document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+    if (!rafId) rafId = requestAnimationFrame(paintGlow);
   });
-
-  (function loop() {
-    curX += (mouseX - curX) * 0.07;
-    curY += (mouseY - curY) * 0.07;
-    glow.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
-    requestAnimationFrame(loop);
-  })();
+  paintGlow();
 
   document.querySelectorAll('.btn').forEach(btn => {
     btn.addEventListener('mousemove', e => {
@@ -294,16 +284,6 @@ function subscribeToScroll(handler) {
       if (!rafId) rafId = requestAnimationFrame(tick);
     });
   });
-})();
-
-// Image Preloader
-(() => {
-  const aboutImg = document.querySelector('#about img');
-  if (!aboutImg || !aboutImg.src) return;
-  const preloader = new Image();
-  preloader.decoding = 'async';
-  preloader.src = aboutImg.src;
-  preloader.decode().catch(() => {});
 })();
 
 // Scroll Reveal
