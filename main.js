@@ -11,24 +11,49 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     return window.innerHeight;
   };
   let lastHeight = 0;
+  let touchMaxHeight = 0;
+  let rafId = 0;
+  let forceOnNextFrame = false;
 
   function setStableViewportHeight(force = false) {
     const viewportHeight = Math.round(getViewportHeight());
     if (viewportHeight <= 0) return;
-    if (!force && Math.abs(viewportHeight - lastHeight) < HEIGHT_CHANGE_THRESHOLD_PX) return;
-    lastHeight = viewportHeight;
-    root.style.setProperty('--stable-vh', `${viewportHeight}px`);
+
+    let nextHeight = viewportHeight;
+    if (isTouch) {
+      if (force || !touchMaxHeight) {
+        touchMaxHeight = viewportHeight;
+      } else if (viewportHeight > touchMaxHeight) {
+        touchMaxHeight = viewportHeight;
+      }
+      nextHeight = touchMaxHeight;
+    }
+
+    if (!force && Math.abs(nextHeight - lastHeight) < HEIGHT_CHANGE_THRESHOLD_PX) return;
+    lastHeight = nextHeight;
+    root.style.setProperty('--stable-vh', `${nextHeight}px`);
   }
 
-  setStableViewportHeight(true);
+  function scheduleStableViewportHeightUpdate(force = false) {
+    forceOnNextFrame = forceOnNextFrame || force;
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => {
+      const shouldForce = forceOnNextFrame;
+      forceOnNextFrame = false;
+      rafId = 0;
+      setStableViewportHeight(shouldForce);
+    });
+  }
+
+  scheduleStableViewportHeightUpdate(true);
 
   window.addEventListener('orientationchange', () => {
     setTimeout(() => {
-      setStableViewportHeight(true);
+      scheduleStableViewportHeightUpdate(true);
     }, ORIENTATION_SETTLE_DELAY_MS);
   }, { passive: true });
 
-  const updateStableVh = () => setStableViewportHeight();
+  const updateStableVh = () => scheduleStableViewportHeightUpdate();
   window.addEventListener('resize', updateStableVh, { passive: true });
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', updateStableVh, { passive: true });
@@ -49,6 +74,20 @@ const lenis = (!isTouch && typeof window.Lenis === 'function')
     })
   : null;
 const hasLenis = Boolean(lenis);
+
+if (!hasLenis && isTouch) {
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const updateSmoothScrollPreference = () => {
+    document.documentElement.classList.toggle('smooth-scroll', !reducedMotionQuery.matches);
+  };
+  updateSmoothScrollPreference();
+
+  if (typeof reducedMotionQuery.addEventListener === 'function') {
+    reducedMotionQuery.addEventListener('change', updateSmoothScrollPreference);
+  } else if (typeof reducedMotionQuery.addListener === 'function') {
+    reducedMotionQuery.addListener(updateSmoothScrollPreference);
+  }
+}
 
 function getNativeScrollSnapshot() {
   const scroll = window.scrollY || document.documentElement.scrollTop || 0;
