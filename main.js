@@ -14,7 +14,7 @@ const saveDataEnabled = navigator.connection?.saveData === true;
   };
   let lastHeight = 0;
   let touchMaxHeight = 0;
-  let rafId = 0;
+  let rafId = null;
   let forceOnNextFrame = false;
 
   function setStableViewportHeight(force = false) {
@@ -210,7 +210,7 @@ function subscribeToScroll(handler) {
   let rafId = 0;
 
   const paintGlow = () => {
-    rafId = 0;
+    rafId = null;
     glow.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
   };
 
