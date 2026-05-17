@@ -59,6 +59,10 @@ html {
   background-color: var(--bg-main);
 }
 
+html.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
 html::-webkit-scrollbar { display: none; }
 
 body {
@@ -631,6 +635,10 @@ nav a:hover::after, nav a.active::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html.smooth-scroll {
+    scroll-behavior: auto;
+  }
+
   .hero-ticker-inner { animation: none; }
 }
 
