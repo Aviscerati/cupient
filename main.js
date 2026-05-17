@@ -563,7 +563,7 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
 // WebMCP — expose portfolio tools to AI agents via the browser
 (() => {
-  if (typeof navigator === 'undefined' || !navigator.modelContext) return;
+  if (!navigator.modelContext) return;
 
   navigator.modelContext.provideContext({
     tools: [
@@ -595,7 +595,7 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
         })
       }
     ]
-  }).catch(() => {});
+  }).catch(err => console.debug('WebMCP initialization failed:', err));
 })();
 
 // Active Nav Link Tracker
