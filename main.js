@@ -1,13 +1,14 @@
 const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const saveDataEnabled = navigator.connection?.saveData === true;
-const LOW_END_MEMORY_GB = 4;
-const LOW_END_CPU_CORES = 4;
+const REDUCED_EFFECTS_MEMORY_THRESHOLD_GB = 4;
+const REDUCED_EFFECTS_CPU_THRESHOLD = 4;
+const ANIMATION_VISIBILITY_THRESHOLD = 0.1; // 10% visibility is enough to resume decorative animation work.
 const rootStyles = getComputedStyle(document.documentElement);
 const deviceMemory = Number(navigator.deviceMemory);
 const hardwareConcurrency = Number(navigator.hardwareConcurrency);
-const isLowEndDevice = (Number.isFinite(deviceMemory) && deviceMemory > 0 && deviceMemory <= LOW_END_MEMORY_GB)
-  || (Number.isFinite(hardwareConcurrency) && hardwareConcurrency > 0 && hardwareConcurrency <= LOW_END_CPU_CORES);
+const isLowEndDevice = (Number.isFinite(deviceMemory) && deviceMemory > 0 && deviceMemory <= REDUCED_EFFECTS_MEMORY_THRESHOLD_GB)
+  || (Number.isFinite(hardwareConcurrency) && hardwareConcurrency > 0 && hardwareConcurrency <= REDUCED_EFFECTS_CPU_THRESHOLD);
 
 // Keep a stable viewport height on mobile to avoid URL-bar scroll resize jumps.
 (() => {
@@ -245,7 +246,7 @@ function subscribeToScroll(handler) {
     if (!entry) return;
     isTickerVisible = entry.isIntersecting;
     updateTickerState();
-  }, { threshold: 0.1 });
+  }, { threshold: ANIMATION_VISIBILITY_THRESHOLD });
 
   observer.observe(ticker);
   document.addEventListener('visibilitychange', updateTickerState, { passive: true });
@@ -572,7 +573,7 @@ function subscribeToScroll(handler) {
     } else {
       stopTick();
     }
-  }, { threshold: 0.1 });
+  }, { threshold: ANIMATION_VISIBILITY_THRESHOLD });
   visibilityObserver.observe(carousel);
 
   document.addEventListener('visibilitychange', () => {
