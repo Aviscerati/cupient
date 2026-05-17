@@ -4,34 +4,35 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 (() => {
   const root = document.documentElement;
   const ORIENTATION_SETTLE_DELAY_MS = 180;
-  const WIDTH_CHANGE_THRESHOLD_PX = 2;
+  const HEIGHT_CHANGE_THRESHOLD_PX = 2;
   const getViewportHeight = () => {
     const viewportHeight = window.visualViewport?.height;
     if (Number.isFinite(viewportHeight) && viewportHeight > 0) return viewportHeight;
     return window.innerHeight;
   };
-  let lastWidth = Math.round(window.innerWidth);
+  let lastHeight = 0;
 
-  function setStableViewportHeight() {
+  function setStableViewportHeight(force = false) {
     const viewportHeight = Math.round(getViewportHeight());
-    if (viewportHeight > 0) root.style.setProperty('--stable-vh', `${viewportHeight}px`);
+    if (viewportHeight <= 0) return;
+    if (!force && Math.abs(viewportHeight - lastHeight) < HEIGHT_CHANGE_THRESHOLD_PX) return;
+    lastHeight = viewportHeight;
+    root.style.setProperty('--stable-vh', `${viewportHeight}px`);
   }
 
-  setStableViewportHeight();
+  setStableViewportHeight(true);
 
   window.addEventListener('orientationchange', () => {
     setTimeout(() => {
-      lastWidth = Math.round(window.innerWidth);
-      setStableViewportHeight();
+      setStableViewportHeight(true);
     }, ORIENTATION_SETTLE_DELAY_MS);
   }, { passive: true });
 
-  window.addEventListener('resize', () => {
-    const currentWidth = Math.round(window.innerWidth);
-    if (Math.abs(currentWidth - lastWidth) < WIDTH_CHANGE_THRESHOLD_PX) return;
-    lastWidth = currentWidth;
-    setStableViewportHeight();
-  }, { passive: true });
+  const updateStableVh = () => setStableViewportHeight();
+  window.addEventListener('resize', updateStableVh, { passive: true });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', updateStableVh, { passive: true });
+  }
 })();
 
 const getNavHeight = () => {
