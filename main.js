@@ -561,6 +561,43 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   updateCarousel();
 })();
 
+// WebMCP — expose portfolio tools to AI agents via the browser
+(() => {
+  if (typeof navigator === 'undefined' || !navigator.modelContext) return;
+
+  navigator.modelContext.provideContext({
+    tools: [
+      {
+        name: 'get_portfolio_info',
+        description: 'Returns structured information about this portfolio: owner name, title, skills, and key links.',
+        inputSchema: { type: 'object', properties: {}, required: [] },
+        execute: async () => ({
+          name: 'April Anderson P. Vismanos',
+          handle: 'cupient',
+          title: 'Information Technologies Student',
+          institution: 'CCIS-CSU',
+          skills: ['HTML', 'CSS', 'JavaScript', 'Lua', 'Python', 'C'],
+          url: 'https://cupient.tech/',
+          markdown: 'https://cupient.tech/index.md',
+          llms_txt: 'https://cupient.tech/llms.txt',
+          agent_json: 'https://cupient.tech/agent.json'
+        })
+      },
+      {
+        name: 'get_contact_info',
+        description: 'Returns contact details and social profiles for the portfolio owner.',
+        inputSchema: { type: 'object', properties: {}, required: [] },
+        execute: async () => ({
+          email: 'andy@cupient.tech',
+          github: 'https://github.com/cupient',
+          linkedin: 'https://linkedin.com/in/cupient',
+          facebook: 'https://facebook.com/cupient'
+        })
+      }
+    ]
+  }).catch(() => {});
+})();
+
 // Active Nav Link Tracker
 (() => {
   const sections = Array.from(document.querySelectorAll('section[id]'));

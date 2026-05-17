@@ -1,0 +1,47 @@
+{
+  "$schema": "https://agentskills.io/schema/v0.2.0/index.json",
+  "skills": [
+    {
+      "name": "link-headers",
+      "type": "link-headers",
+      "description": "Link response headers for agent discovery (RFC 8288). HTML <link> tags point to api-catalog and service-doc endpoints.",
+      "url": "https://isitagentready.com/.well-known/agent-skills/link-headers/SKILL.md",
+      "sha256": ""
+    },
+    {
+      "name": "content-signals",
+      "type": "content-signals",
+      "description": "AI content usage preferences declared via Content-Signal directives in robots.txt.",
+      "url": "https://isitagentready.com/.well-known/agent-skills/content-signals/SKILL.md",
+      "sha256": ""
+    },
+    {
+      "name": "api-catalog",
+      "type": "api-catalog",
+      "description": "API catalog for automated discovery at /.well-known/api-catalog (RFC 9727) using application/linkset+json.",
+      "url": "https://isitagentready.com/.well-known/agent-skills/api-catalog/SKILL.md",
+      "sha256": ""
+    },
+    {
+      "name": "mcp-server-card",
+      "type": "mcp-server-card",
+      "description": "MCP Server Card published at /.well-known/mcp/server-card.json for agent discovery (SEP-1649).",
+      "url": "https://isitagentready.com/.well-known/agent-skills/mcp-server-card/SKILL.md",
+      "sha256": ""
+    },
+    {
+      "name": "agent-skills",
+      "type": "agent-skills",
+      "description": "Agent skills discovery index at /.well-known/agent-skills/index.json per Agent Skills Discovery RFC v0.2.0.",
+      "url": "https://isitagentready.com/.well-known/agent-skills/agent-skills/SKILL.md",
+      "sha256": ""
+    },
+    {
+      "name": "webmcp",
+      "type": "webmcp",
+      "description": "WebMCP tools exposed via navigator.modelContext.provideContext() for portfolio info and contact lookup.",
+      "url": "https://isitagentready.com/.well-known/agent-skills/webmcp/SKILL.md",
+      "sha256": ""
+    }
+  ]
+}
