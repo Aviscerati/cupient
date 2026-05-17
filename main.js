@@ -1,4 +1,12 @@
 const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+const lenis = new Lenis();
+
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+
+requestAnimationFrame(raf);
 
 // Navbar
 (() => {
@@ -21,135 +29,17 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   });
 })();
 
-// Scrollsnap
+// Smooth Anchor Scroll
 (() => {
-  function easeInOutCubic(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  }
-
-  let activeAnimation = null;
-  let isProgrammaticScroll = false;
-  const nav = document.querySelector('nav');
-  const sections = Array.from(document.querySelectorAll("section"));
-  const lastSection = sections[sections.length - 1];
-  if (!sections.length) return;
-
-  const getNavHeight = () => nav?.offsetHeight || 0;
-  const getMaxScroll = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-
-  function getTargetScrollTop(target, navHeight, maxScroll) {
-    if (typeof target === "number") return target;
-    if (target.id === 'hero') return 0;
-    if (target === lastSection) return maxScroll;
-    return target.getBoundingClientRect().top + window.scrollY - navHeight;
-  }
-
-  function smoothScrollTo(target, duration = 750) {
-    const navHeight = getNavHeight();
-    const start = window.scrollY;
-    const maxScroll = getMaxScroll();
-    const end = Math.max(0, Math.min(getTargetScrollTop(target, navHeight, maxScroll), maxScroll));
-    const distance = end - start;
-
-    if (Math.abs(distance) < 2) return Promise.resolve();
-    if (activeAnimation) cancelAnimationFrame(activeAnimation);
-
-    isProgrammaticScroll = true;
-
-    return new Promise((resolve) => {
-      let startTime = null;
-
-      function step(ts) {
-        if (!startTime) startTime = ts;
-        const progress = Math.min((ts - startTime) / duration, 1);
-        window.scrollTo(0, start + distance * easeInOutCubic(progress));
-
-        if (progress < 1) {
-          activeAnimation = requestAnimationFrame(step);
-        } else {
-          activeAnimation = null;
-          setTimeout(() => {
-            isProgrammaticScroll = false;
-            resolve();
-          }, 50);
-        }
-      }
-      activeAnimation = requestAnimationFrame(step);
-    });
-  }
-
-  let snapTimer = null;
-  let isSnapping = false;
-
-  function cancelSnap() {
-    if (activeAnimation) {
-      cancelAnimationFrame(activeAnimation);
-      activeAnimation = null;
-    }
-    isProgrammaticScroll = false;
-    isSnapping = false;
-    clearTimeout(snapTimer); 
-  }
-
-  window.addEventListener("wheel", cancelSnap, { passive: true });
-  window.addEventListener("touchstart", cancelSnap, { passive: true });
-
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
-    link.addEventListener("click", async function (e) {
+    link.addEventListener("click", function (e) {
       const href = this.getAttribute("href");
       e.preventDefault();
       if (!href || href === "#") return;
       const target = document.querySelector(href);
-      if (target) await smoothScrollTo(target, 900);
+      if (target) lenis.scrollTo(target, { duration: 1.2 });
     });
   });
-
-  if (isTouch) return;
-
-  let lastScrollY = window.scrollY;
-  let scrollDirection = "down";
-  let isPageLoaded = false;
-  
-  window.addEventListener('load', () => setTimeout(() => { isPageLoaded = true; }, 500));
-
-  window.addEventListener("scroll", () => {
-    if (!isPageLoaded) {
-      lastScrollY = window.scrollY;
-      return;
-    }
-
-    if (isSnapping || isProgrammaticScroll) return;
-
-    const dy = window.scrollY - lastScrollY;
-    if (dy !== 0) scrollDirection = dy > 0 ? "down" : "up";
-    lastScrollY = window.scrollY;
-
-    clearTimeout(snapTimer);
-    
-    snapTimer = setTimeout(async () => {
-      if (isProgrammaticScroll) return;
-
-      const navHeight = getNavHeight();
-      const maxScroll = getMaxScroll();
-      let target = null;
-
-      if (scrollDirection === "down") {
-        target = sections.find((sec) => sec.getBoundingClientRect().top > navHeight + 4);
-      } else {
-        const above = sections.filter((sec) => sec.getBoundingClientRect().top < navHeight - 4);
-        target = above[above.length - 1] ?? sections[0];
-      }
-
-      if (!target) return;
-
-      const targetScrollTop = getTargetScrollTop(target, navHeight, maxScroll);
-      if (Math.abs(targetScrollTop - window.scrollY) < 5) return;
-
-      isSnapping = true;
-      await smoothScrollTo(target, 550);
-      isSnapping = false;
-    }, 250); 
-  }, { passive: true });
 })();
 
 // Footer Observer
@@ -175,21 +65,20 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   if (!scrollbar || !thumb) return;
 
   let hideTimer;
-  let ticking = false;
   let trackHeight = 0;
+  let lastScroll = 0;
+  let lastLimit = 0;
 
   function updateTrackHeight() {
     trackHeight = scrollbar.getBoundingClientRect().height;
   }
 
-  function updateThumb() {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  function updateThumb(scrollTop, maxScroll) {
     const docHeight = document.documentElement.scrollHeight;
     const viewportHeight = window.innerHeight;
     if (!trackHeight) updateTrackHeight();
 
     const thumbHeight = Math.max((viewportHeight / docHeight) * trackHeight, 40);
-    const maxScroll = docHeight - viewportHeight;
     const maxThumbTravel = trackHeight - thumbHeight;
     const thumbTop = maxScroll > 0 ? (scrollTop / maxScroll) * maxThumbTravel : 0;
 
@@ -203,24 +92,20 @@ const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     hideTimer = setTimeout(() => scrollbar.classList.remove("visible"), 700);
   }
 
-  window.addEventListener("scroll", () => {
+  lenis.on('scroll', (e) => {
     showScrollbar();
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        updateThumb();
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
+    lastScroll = e.scroll;
+    lastLimit = e.limit;
+    updateThumb(lastScroll, lastLimit);
+  });
 
   window.addEventListener("resize", () => {
     updateTrackHeight();
-    updateThumb();
+    updateThumb(lastScroll, lastLimit);
   });
 
   updateTrackHeight();
-  updateThumb();
+  updateThumb(lenis.scroll || 0, lenis.limit || 0);
 })();
 
 // Grain Overlay
