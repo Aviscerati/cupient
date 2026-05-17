@@ -31,6 +31,7 @@
   --pad-x: 5%;
   --pad-y: 52px;
   --heading-gap: 24px;
+  --section-intrinsic-size: 900px;
 }
 
 @supports (height: 100svh) {
@@ -315,7 +316,7 @@ section {
 
 section:not(#hero) {
   content-visibility: auto;
-  contain-intrinsic-size: 1px 900px;
+  contain-intrinsic-size: 1px var(--section-intrinsic-size);
 }
 
 section h2 {

@@ -62,21 +62,16 @@ const saveDataEnabled = navigator.connection?.saveData === true;
   }
 })();
 
-const lenis = null;
-const hasLenis = false;
+const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+const updateSmoothScrollPreference = () => {
+  document.documentElement.classList.toggle('smooth-scroll', !reducedMotionQuery.matches);
+};
+updateSmoothScrollPreference();
 
-if (!hasLenis) {
-  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const updateSmoothScrollPreference = () => {
-    document.documentElement.classList.toggle('smooth-scroll', !reducedMotionQuery.matches);
-  };
-  updateSmoothScrollPreference();
-
-  if (typeof reducedMotionQuery.addEventListener === 'function') {
-    reducedMotionQuery.addEventListener('change', updateSmoothScrollPreference);
-  } else if (typeof reducedMotionQuery.addListener === 'function') {
-    reducedMotionQuery.addListener(updateSmoothScrollPreference);
-  }
+if (typeof reducedMotionQuery.addEventListener === 'function') {
+  reducedMotionQuery.addEventListener('change', updateSmoothScrollPreference);
+} else if (typeof reducedMotionQuery.addListener === 'function') {
+  reducedMotionQuery.addListener(updateSmoothScrollPreference);
 }
 
 function getNativeScrollSnapshot() {
@@ -86,13 +81,6 @@ function getNativeScrollSnapshot() {
 }
 
 function subscribeToScroll(handler) {
-  if (hasLenis) {
-    lenis.on('scroll', handler);
-    return () => {
-      if (typeof lenis.off === 'function') lenis.off('scroll', handler);
-    };
-  }
-
   let ticking = false;
   let nativeLimit = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
 
@@ -191,9 +179,7 @@ function subscribeToScroll(handler) {
 
   updateTrackHeight();
   const initialSnapshot = getNativeScrollSnapshot();
-  const initialScroll = hasLenis && Number.isFinite(lenis.scroll) ? lenis.scroll : initialSnapshot.scroll;
-  const initialLimit = hasLenis && Number.isFinite(lenis.limit) ? lenis.limit : initialSnapshot.limit;
-  updateThumb(initialScroll, initialLimit);
+  updateThumb(initialSnapshot.scroll, initialSnapshot.limit);
 })();
 
 // Grain Overlay
