@@ -62,16 +62,33 @@ const saveDataEnabled = navigator.connection?.saveData === true;
   }
 })();
 
-const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-const updateSmoothScrollPreference = () => {
-  document.documentElement.classList.toggle('smooth-scroll', !reducedMotionQuery.matches);
+const getNavHeight = () => {
+  const nav = document.querySelector('nav');
+  if (nav && nav.offsetHeight) return nav.offsetHeight;
+  const cssNavHeight = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'));
+  return Number.isFinite(cssNavHeight) ? cssNavHeight : 54;
 };
-updateSmoothScrollPreference();
+const lenis = (!isTouch && typeof window.Lenis === 'function')
+  ? new window.Lenis({
+      autoRaf: true,
+      anchors: { offset: -getNavHeight() },
+      stopInertiaOnNavigate: true,
+    })
+  : null;
+const hasLenis = Boolean(lenis);
 
-if (typeof reducedMotionQuery.addEventListener === 'function') {
-  reducedMotionQuery.addEventListener('change', updateSmoothScrollPreference);
-} else if (typeof reducedMotionQuery.addListener === 'function') {
-  reducedMotionQuery.addListener(updateSmoothScrollPreference);
+if (!hasLenis && isTouch) {
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const updateSmoothScrollPreference = () => {
+    document.documentElement.classList.toggle('smooth-scroll', !reducedMotionQuery.matches);
+  };
+  updateSmoothScrollPreference();
+
+  if (typeof reducedMotionQuery.addEventListener === 'function') {
+    reducedMotionQuery.addEventListener('change', updateSmoothScrollPreference);
+  } else if (typeof reducedMotionQuery.addListener === 'function') {
+    reducedMotionQuery.addListener(updateSmoothScrollPreference);
+  }
 }
 
 function getNativeScrollSnapshot() {
@@ -81,6 +98,13 @@ function getNativeScrollSnapshot() {
 }
 
 function subscribeToScroll(handler) {
+  if (hasLenis) {
+    lenis.on('scroll', handler);
+    return () => {
+      if (typeof lenis.off === 'function') lenis.off('scroll', handler);
+    };
+  }
+
   let ticking = false;
   let nativeLimit = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
 
@@ -179,7 +203,9 @@ function subscribeToScroll(handler) {
 
   updateTrackHeight();
   const initialSnapshot = getNativeScrollSnapshot();
-  updateThumb(initialSnapshot.scroll, initialSnapshot.limit);
+  const initialScroll = hasLenis && Number.isFinite(lenis.scroll) ? lenis.scroll : initialSnapshot.scroll;
+  const initialLimit = hasLenis && Number.isFinite(lenis.limit) ? lenis.limit : initialSnapshot.limit;
+  updateThumb(initialScroll, initialLimit);
 })();
 
 // Grain Overlay
