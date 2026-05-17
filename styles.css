@@ -1386,7 +1386,6 @@ body.is-scrolling .grain-overlay { animation-play-state: paused; }
   z-index: 2;
   top: 0;
   left: 0;
-  will-change: transform;
 }
 
 .reveal {

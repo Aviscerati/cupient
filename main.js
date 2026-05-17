@@ -233,18 +233,19 @@ function subscribeToScroll(handler) {
 
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
-  let glowRafId = -1;
+  const NO_PENDING_FRAME = -1;
+  let glowAnimationFrameId = NO_PENDING_FRAME;
 
   const paintGlow = () => {
-    glowRafId = -1;
+    glowAnimationFrameId = NO_PENDING_FRAME;
     glow.style.transform = `translate3d(${mouseX - 290}px, ${mouseY - 290}px, 0)`;
   };
 
   document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    if (glowRafId !== -1) return;
-    glowRafId = requestAnimationFrame(paintGlow);
+    if (glowAnimationFrameId !== NO_PENDING_FRAME) return;
+    glowAnimationFrameId = requestAnimationFrame(paintGlow);
   });
   paintGlow();
 
