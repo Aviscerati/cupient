@@ -16,9 +16,29 @@ function subscribeToScroll(handler) {
     };
   }
 
-  const nativeHandler = () => handler(getNativeScrollSnapshot());
+  let ticking = false;
+  let nativeLimit = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+  const updateLimit = () => {
+    nativeLimit = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  };
+
+  const nativeHandler = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      const scroll = window.scrollY || document.documentElement.scrollTop || 0;
+      handler({ scroll, limit: nativeLimit });
+    });
+  };
+
+  window.addEventListener('resize', updateLimit);
   window.addEventListener('scroll', nativeHandler, { passive: true });
-  return () => window.removeEventListener('scroll', nativeHandler);
+  return () => {
+    window.removeEventListener('resize', updateLimit);
+    window.removeEventListener('scroll', nativeHandler);
+  };
 }
 
 function raf(time) {
@@ -68,6 +88,7 @@ if (hasLenis) requestAnimationFrame(raf);
       try {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (_) {
+        // Fallback for browsers that do not support scroll options.
         target.scrollIntoView();
       }
     });
