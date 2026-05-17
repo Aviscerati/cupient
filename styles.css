@@ -1199,6 +1199,7 @@ footer {
   color: var(--text-muted);
   text-decoration: none;
   font-size: 13px;
+  letter-spacing: 0.2px;
   transition: color 0.2s;
 }
 
@@ -1208,9 +1209,6 @@ footer {
 }
 
 .footer-brand span { color: var(--accent-end); }
-footer span { color: var(--accent-end); }
-
-.footer-links a, .footer-socials a { letter-spacing: 0.2px; }
 
 @media (max-width: 639px) {
   .nav-toggle { display: flex; }
