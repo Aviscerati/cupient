@@ -19,6 +19,12 @@
           "href": "https://cupient.tech/llms.txt",
           "type": "text/plain"
         }
+      ],
+      "oauth-protected-resource": [
+        {
+          "href": "https://cupient.tech/.well-known/oauth-protected-resource",
+          "type": "application/json"
+        }
       ]
     }
   ]

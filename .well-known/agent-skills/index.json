@@ -37,6 +37,20 @@
       "sha256": ""
     },
     {
+      "name": "markdown-negotiation",
+      "type": "markdown-negotiation",
+      "description": "Markdown version of the portfolio available at /index.md with Content-Type text/markdown; advertised via <link rel=\"alternate\" type=\"text/markdown\"> and Link response header.",
+      "url": "https://isitagentready.com/.well-known/agent-skills/markdown-negotiation/SKILL.md",
+      "sha256": ""
+    },
+    {
+      "name": "oauth-protected-resource",
+      "type": "oauth-protected-resource",
+      "description": "OAuth Protected Resource Metadata at /.well-known/oauth-protected-resource declaring this as a public resource with no authorization servers required (RFC 9728).",
+      "url": "https://isitagentready.com/.well-known/agent-skills/oauth-protected-resource/SKILL.md",
+      "sha256": ""
+    },
+    {
       "name": "webmcp",
       "type": "webmcp",
       "description": "WebMCP tools exposed via navigator.modelContext.provideContext() for portfolio info and contact lookup.",

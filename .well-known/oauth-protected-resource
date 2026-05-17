@@ -1,0 +1,7 @@
+{
+  "resource": "https://cupient.tech/",
+  "authorization_servers": [],
+  "scopes_supported": [],
+  "bearer_methods_supported": [],
+  "resource_documentation": "https://cupient.tech/index.md"
+}
