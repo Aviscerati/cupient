@@ -154,8 +154,6 @@ function subscribeToScroll(handler) {
     requestAnimationFrame(() => {
       toggleLabel.classList.add('is-animating');
     });
-    const handleAnimationEnd = () => toggleLabel.classList.remove('is-animating');
-    toggleLabel.addEventListener('animationend', handleAnimationEnd, { once: true });
   }
 
   function updateToggleLabel(isOpen) {
