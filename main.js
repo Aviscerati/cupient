@@ -155,16 +155,18 @@ function subscribeToScroll(handler) {
     if (nav) nav.classList.toggle('menu-open', isOpen);
   }
 
+  function shouldCloseMenuOnEscape() {
+    if (!menu.classList.contains('open')) return false;
+    const activeElement = document.activeElement;
+    return !activeElement || activeElement === document.body || activeElement === document.documentElement
+      || menu.contains(activeElement) || toggle.contains(activeElement);
+  }
+
   toggle.addEventListener('click', () => setMenuState(!menu.classList.contains('open')));
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenuState(false)));
 
   document.addEventListener('keydown', e => {
-    if (e.key !== 'Escape' || !menu.classList.contains('open')) return;
-    const activeElement = document.activeElement;
-    if (!activeElement || activeElement === document.body || activeElement === document.documentElement
-      || menu.contains(activeElement) || toggle.contains(activeElement)) {
-      setMenuState(false);
-    }
+    if (e.key === 'Escape' && shouldCloseMenuOnEscape()) setMenuState(false);
   });
 
   document.addEventListener('click', e => {
