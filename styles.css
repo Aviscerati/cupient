@@ -190,6 +190,32 @@ nav, section, footer {
   box-shadow: 0 4px 24px rgba(230, 57, 70, 0.18);
 }
 
+@media (hover: none) and (pointer: coarse) {
+  a,
+  button,
+  [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  .btn:active,
+  .nav-toggle:active,
+  .contact-links a:active,
+  .error-link:active {
+    transform: translateY(1px) scale(0.98);
+    opacity: 0.85;
+    background-color: var(--accent-ghost);
+    border-color: var(--accent-start);
+  }
+
+  nav a:active,
+  .project-header a:active,
+  .footer-links a:active,
+  .footer-socials a:active {
+    opacity: 0.7;
+  }
+}
+
 /* 404 page */
 .error-page-main {
   min-height: calc(var(--stable-vh) - var(--nav-h));
