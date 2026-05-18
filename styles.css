@@ -451,12 +451,23 @@ nav a:hover::after, nav a.active::after {
 }
 
 .nav-toggle-label {
+  display: inline-flex;
+  align-items: center;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: inherit;
   white-space: nowrap;
+}
+
+.nav-toggle-label.is-animating {
+  animation: nav-label-swap 0.24s ease;
+}
+
+@keyframes nav-label-swap {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .nav-toggle-icon span {
@@ -1356,11 +1367,26 @@ footer {
     transition: color 0.2s ease;
   }
 
-  .nav-menu a:hover,
-  .nav-menu a.active {
-    color: var(--accent-end);
+  .nav-menu a:hover {
+    color: var(--accent-end, #f4831f);
     background: none;
     transform: none;
+  }
+
+  .nav-menu a.active {
+    color: var(--accent-end, #f4831f);
+    background: none;
+    transform: none;
+  }
+
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .nav-menu a.active {
+      background: linear-gradient(90deg, var(--accent-start, #e63946), var(--accent-end, #f4831f));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
   }
 
   .nav-menu a::after { display: none; }

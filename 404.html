@@ -7,6 +7,11 @@
     <meta name="application-name" content="cupient">
     <meta name="apple-mobile-web-app-title" content="cupient">
     <title>404 - Page Not Found | cupient</title>
+    <meta name="description" content="The page you're looking for doesn't exist on the cupient portfolio." />
+    <meta name="author" content="April Anderson P. Vismanos" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Karla:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="/styles.css">
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" type="image/svg+xml" href="/logo.svg">
@@ -36,13 +41,16 @@
             </svg>
         </a>
 
-        <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-labelledby="nav-toggle-label">
+            <span class="nav-toggle-icon" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+            <span class="nav-toggle-label" id="nav-toggle-label">Menu</span>
         </button>
 
-        <ul class="nav-menu">
+        <ul class="nav-menu" id="nav-menu" aria-hidden="true">
             <li><a href="/#about">About</a></li>
             <li><a href="/#skills">Skills</a></li>
             <li><a href="/#projects">Projects</a></li>
