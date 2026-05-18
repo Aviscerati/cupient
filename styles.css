@@ -1368,20 +1368,20 @@ footer {
   }
 
   .nav-menu a:hover {
-    color: var(--accent-end);
+    color: var(--accent-end, #f4831f);
     background: none;
     transform: none;
   }
 
   .nav-menu a.active {
-    color: var(--accent-end);
+    color: var(--accent-end, #f4831f);
     background: none;
     transform: none;
   }
 
   @supports ((-webkit-background-clip: text) or (background-clip: text)) {
     .nav-menu a.active {
-      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+      background: linear-gradient(90deg, var(--accent-start, #e63946), var(--accent-end, #f4831f));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;

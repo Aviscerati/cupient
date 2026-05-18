@@ -151,8 +151,9 @@ function subscribeToScroll(handler) {
   function animateToggleLabel() {
     if (!toggleLabel || prefersReducedMotion.matches) return;
     toggleLabel.classList.remove('is-animating');
-    void toggleLabel.offsetWidth;
-    toggleLabel.classList.add('is-animating');
+    requestAnimationFrame(() => {
+      toggleLabel.classList.add('is-animating');
+    });
     const handleAnimationEnd = () => toggleLabel.classList.remove('is-animating');
     toggleLabel.addEventListener('animationend', handleAnimationEnd, { once: true });
   }
