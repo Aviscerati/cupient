@@ -148,6 +148,15 @@ function subscribeToScroll(handler) {
 
   if (!toggle || !menu) return;
 
+  function animateToggleLabel() {
+    if (!toggleLabel || prefersReducedMotion.matches) return;
+    toggleLabel.classList.remove('is-animating');
+    void toggleLabel.offsetWidth;
+    toggleLabel.classList.add('is-animating');
+    const handleAnimationEnd = () => toggleLabel.classList.remove('is-animating');
+    toggleLabel.addEventListener('animationend', handleAnimationEnd, { once: true });
+  }
+
   function updateToggleLabel(isOpen) {
     if (!toggleLabel) return;
     const nextLabel = isOpen ? 'Close' : 'Menu';
@@ -162,6 +171,7 @@ function subscribeToScroll(handler) {
     const startWidth = toggle.getBoundingClientRect().width;
     toggleLabel.textContent = nextLabel;
     const endWidth = toggle.getBoundingClientRect().width;
+    animateToggleLabel();
 
     if (Math.abs(endWidth - startWidth) < 1) return;
 
