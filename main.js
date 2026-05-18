@@ -144,8 +144,38 @@ function subscribeToScroll(handler) {
   const menu = document.querySelector('.nav-menu');
   const nav = document.querySelector('nav');
   const toggleLabel = toggle?.querySelector('.nav-toggle-label');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   if (!toggle || !menu) return;
+
+  function updateToggleLabel(isOpen) {
+    if (!toggleLabel) return;
+    const nextLabel = isOpen ? 'Close' : 'Menu';
+    if (toggleLabel.textContent === nextLabel) return;
+
+    if (prefersReducedMotion.matches) {
+      toggleLabel.textContent = nextLabel;
+      toggle.style.width = '';
+      return;
+    }
+
+    const startWidth = toggle.getBoundingClientRect().width;
+    toggleLabel.textContent = nextLabel;
+    const endWidth = toggle.getBoundingClientRect().width;
+
+    if (Math.abs(endWidth - startWidth) < 1) return;
+
+    toggle.style.width = `${startWidth}px`;
+    toggle.getBoundingClientRect();
+    toggle.style.width = `${endWidth}px`;
+
+    const handleTransitionEnd = event => {
+      if (event.propertyName !== 'width') return;
+      toggle.style.width = '';
+      toggle.removeEventListener('transitionend', handleTransitionEnd);
+    };
+    toggle.addEventListener('transitionend', handleTransitionEnd);
+  }
 
   function setMenuState(isOpen) {
     menu.classList.toggle('open', isOpen);
@@ -154,7 +184,7 @@ function subscribeToScroll(handler) {
     menu.setAttribute('aria-hidden', String(!isOpen));
     document.body.classList.toggle('nav-open', isOpen);
     if (nav) nav.classList.toggle('menu-open', isOpen);
-    if (toggleLabel) toggleLabel.textContent = isOpen ? 'Close' : 'Menu';
+    updateToggleLabel(isOpen);
   }
 
   function shouldHandleEscapeKey() {
