@@ -181,7 +181,7 @@ function subscribeToScroll(handler) {
     if (event.matches) setMenuState(false);
   };
   mediaQuery.addEventListener('change', handleMediaChange);
-  setMenuState(menu.classList.contains('open'));
+  setMenuState(false);
 })();
 
 // Scrollbar
