@@ -151,7 +151,6 @@ function subscribeToScroll(handler) {
     menu.classList.toggle('open', isOpen);
     toggle.classList.toggle('active', isOpen);
     toggle.setAttribute('aria-expanded', String(isOpen));
-    toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
     menu.setAttribute('aria-hidden', String(!isOpen));
     document.body.classList.toggle('nav-open', isOpen);
     if (nav) nav.classList.toggle('menu-open', isOpen);
