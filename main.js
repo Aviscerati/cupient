@@ -155,7 +155,7 @@ function subscribeToScroll(handler) {
     if (nav) nav.classList.toggle('menu-open', isOpen);
   }
 
-  function shouldCloseMenuOnEscape() {
+  function shouldHandleEscapeKey() {
     if (!menu.classList.contains('open')) return false;
     const activeElement = document.activeElement;
     return !activeElement || activeElement === document.body || activeElement === document.documentElement
@@ -166,7 +166,7 @@ function subscribeToScroll(handler) {
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenuState(false)));
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && shouldCloseMenuOnEscape()) setMenuState(false);
+    if (e.key === 'Escape' && shouldHandleEscapeKey()) setMenuState(false);
   });
 
   document.addEventListener('click', e => {
