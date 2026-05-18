@@ -166,8 +166,9 @@ function subscribeToScroll(handler) {
     if (Math.abs(endWidth - startWidth) < 1) return;
 
     toggle.style.width = `${startWidth}px`;
-    toggle.getBoundingClientRect();
-    toggle.style.width = `${endWidth}px`;
+    requestAnimationFrame(() => {
+      toggle.style.width = `${endWidth}px`;
+    });
 
     const handleTransitionEnd = event => {
       if (event.propertyName !== 'width') return;
