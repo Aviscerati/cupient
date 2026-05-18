@@ -6,24 +6,26 @@
     </linearGradient>
   </defs>
 
-  <!-- Dark rounded background -->
-  <circle cx="256" cy="256" r="256" fill="#1a1a1a" />
+  <!-- Dark rounded square background -->
+  <rect x="0" y="0" width="512" height="512" rx="96" ry="96" fill="#1a1a1a" />
 
-  <path fill="#FFFFFF" 
-        d="M 10 265 
-           L 205 245 
-           L 256 265 
-           L 307 245 
-           L 502 265 
-           L 307 310 
-           L 256 502 
-           L 205 310 
-           Z" />
-           
-  <path fill="url(#northstarGrad)" 
-        d="M 256 10 
-           L 307 220 
-           L 256 240 
-           L 205 220 
-           Z" />
+  <g transform="translate(256 256) scale(0.88) translate(-256 -256)">
+    <path fill="#FFFFFF" 
+          d="M 10 265 
+             L 205 245 
+             L 256 265 
+             L 307 245 
+             L 502 265 
+             L 307 310 
+             L 256 502 
+             L 205 310 
+             Z" />
+             
+    <path fill="url(#northstarGrad)" 
+          d="M 256 10 
+             L 307 220 
+             L 256 240 
+             L 205 220 
+             Z" />
+  </g>
 </svg>
