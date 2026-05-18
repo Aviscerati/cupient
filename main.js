@@ -180,7 +180,6 @@ function subscribeToScroll(handler) {
     if (event.matches) setMenuState(false);
   };
   mediaQuery.addEventListener('change', handleMediaChange);
-  setMenuState(false);
 })();
 
 // Scrollbar
