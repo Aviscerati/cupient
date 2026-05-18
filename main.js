@@ -142,21 +142,39 @@ function subscribeToScroll(handler) {
 (() => {
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.querySelector('.nav-menu');
+  const nav = document.querySelector('nav');
 
   if (!toggle || !menu) return;
 
   function setMenuState(isOpen) {
     menu.classList.toggle('open', isOpen);
     toggle.classList.toggle('active', isOpen);
-    toggle.setAttribute('aria-expanded', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    menu.setAttribute('aria-hidden', String(!isOpen));
+    document.body.classList.toggle('nav-open', isOpen);
+    if (nav) nav.classList.toggle('menu-open', isOpen);
   }
 
   toggle.addEventListener('click', () => setMenuState(!menu.classList.contains('open')));
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenuState(false)));
 
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') setMenuState(false);
+  });
+
   document.addEventListener('click', e => {
     if (!toggle.contains(e.target) && !menu.contains(e.target)) setMenuState(false);
   });
+
+  const mediaQuery = window.matchMedia('(min-width: 640px)');
+  const handleMediaChange = event => {
+    if (event.matches) setMenuState(false);
+  };
+  if (mediaQuery.addEventListener) {
+    mediaQuery.addEventListener('change', handleMediaChange);
+  } else {
+    mediaQuery.addListener(handleMediaChange);
+  }
 })();
 
 // Scrollbar
