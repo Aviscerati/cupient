@@ -143,6 +143,7 @@ function subscribeToScroll(handler) {
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.querySelector('.nav-menu');
   const nav = document.querySelector('nav');
+  const toggleLabel = toggle?.querySelector('.nav-toggle-label');
 
   if (!toggle || !menu) return;
 
@@ -150,9 +151,11 @@ function subscribeToScroll(handler) {
     menu.classList.toggle('open', isOpen);
     toggle.classList.toggle('active', isOpen);
     toggle.setAttribute('aria-expanded', String(isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
     menu.setAttribute('aria-hidden', String(!isOpen));
     document.body.classList.toggle('nav-open', isOpen);
     if (nav) nav.classList.toggle('menu-open', isOpen);
+    if (toggleLabel) toggleLabel.textContent = isOpen ? 'Close' : 'Menu';
   }
 
   function shouldHandleEscapeKey() {
@@ -178,6 +181,7 @@ function subscribeToScroll(handler) {
     if (event.matches) setMenuState(false);
   };
   mediaQuery.addEventListener('change', handleMediaChange);
+  setMenuState(menu.classList.contains('open'));
 })();
 
 // Scrollbar
