@@ -143,6 +143,7 @@ function subscribeToScroll(handler) {
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.querySelector('.nav-menu');
   const nav = document.querySelector('nav');
+  const toggleLabel = toggle?.querySelector('.nav-toggle-label');
 
   if (!toggle || !menu) return;
 
@@ -153,6 +154,7 @@ function subscribeToScroll(handler) {
     menu.setAttribute('aria-hidden', String(!isOpen));
     document.body.classList.toggle('nav-open', isOpen);
     if (nav) nav.classList.toggle('menu-open', isOpen);
+    if (toggleLabel) toggleLabel.textContent = isOpen ? 'Close' : 'Menu';
   }
 
   function shouldHandleEscapeKey() {

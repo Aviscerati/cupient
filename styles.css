@@ -432,29 +432,40 @@ nav a:hover::after, nav a.active::after {
 
 .nav-toggle {
   display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 36px;
-  height: 36px;
-  background: rgba(15, 15, 18, 0.6);
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px;
+  background: transparent;
   border: 1px solid var(--border-subtle);
-  border-radius: 999px;
+  border-radius: 12px;
   cursor: pointer;
-  padding: 4px;
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.nav-toggle span {
+.nav-toggle-icon {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-toggle-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.nav-toggle-icon span {
   display: block;
-  width: 22px;
+  width: 18px;
   height: 2px;
-  background: var(--text-muted);
+  background: currentColor;
   border-radius: 2px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  transform-origin: left center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  transform-origin: center;
 }
 
 .nav-toggle:hover {
@@ -462,24 +473,21 @@ nav a:hover::after, nav a.active::after {
 }
 
 .nav-toggle.active {
-  background: var(--accent-ghost);
-  border-color: rgba(230, 57, 70, 0.35);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+  background: rgba(230, 57, 70, 0.12);
+  border-color: rgba(230, 57, 70, 0.45);
 }
 
-.nav-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(0px, -1px);
-  background: var(--text-primary);
+.nav-toggle.active .nav-toggle-icon span:nth-child(1) {
+  transform: rotate(45deg) translate(2px, 2px);
 }
 
-.nav-toggle.active span:nth-child(2) {
+.nav-toggle.active .nav-toggle-icon span:nth-child(2) {
   opacity: 0;
   transform: scaleX(0);
 }
 
-.nav-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(0px, 1px);
-  background: var(--text-primary);
+.nav-toggle.active .nav-toggle-icon span:nth-child(3) {
+  transform: rotate(-45deg) translate(2px, -2px);
 }
 
 #hero {
@@ -1280,89 +1288,78 @@ footer {
 .footer-brand span { color: var(--accent-end); }
 
 @media (max-width: 639px) {
+  :root {
+    --nav-h: 60px;
+  }
+
+  nav {
+    background: var(--bg-main);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  nav.menu-open {
+    background: var(--bg-main);
+    box-shadow: none;
+  }
+
+  body::after {
+    background: rgba(7, 7, 10, 0.85);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .nav-toggle { display: flex; }
 
   .nav-menu {
     position: fixed;
-    top: calc(var(--nav-h) + 12px);
-    left: var(--pad-x);
-    right: var(--pad-x);
+    inset: var(--nav-h) 0 0 0;
     flex-direction: column;
-    gap: 6px;
-    padding: 0;
-    background: linear-gradient(180deg, rgba(15, 15, 18, 0.95), rgba(10, 10, 12, 0.98));
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 16px;
-    box-shadow: 0 24px 52px rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    max-height: 0;
-    overflow: hidden;
+    align-items: flex-start;
+    gap: 0;
+    padding: 20px var(--pad-x) 24px;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-subtle);
     opacity: 0;
-    transform: translateY(-8px) scale(0.98);
+    transform: translateY(-8px);
     pointer-events: none;
-    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease, opacity 0.2s ease, transform 0.3s ease;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    will-change: transform;
     z-index: 210;
   }
 
-  .nav-menu::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: 16px;
-    right: 16px;
-    height: 2px;
-    background: linear-gradient(90deg, rgba(230, 57, 70, 0.75), rgba(244, 131, 31, 0.75));
-    opacity: 0.6;
-  }
-
   .nav-menu.open {
-    max-height: 360px;
-    padding: 10px 8px 12px;
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
     pointer-events: auto;
   }
 
-  .nav-menu li { width: 100%; }
-  
-  .nav-menu a {
-    display: block;
-    position: relative;
-    padding: 14px 16px 14px 40px;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    border-radius: 12px;
-    color: var(--text-primary);
-    transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  .nav-menu li {
+    width: 100%;
+    border-bottom: 1px solid var(--border-subtle);
   }
 
-  .nav-menu a::before {
-    content: '';
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    width: 6px;
-    height: 6px;
-    border-radius: 999px;
-    background: linear-gradient(140deg, var(--accent-start), var(--accent-end));
-    transform: translateY(-50%) scale(0.6);
-    opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+  .nav-menu li:last-child { border-bottom: none; }
+  
+  .nav-menu a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: var(--text-primary);
+    transition: color 0.2s ease;
   }
 
   .nav-menu a:hover,
   .nav-menu a.active {
-    background: linear-gradient(90deg, rgba(230, 57, 70, 0.12), rgba(244, 131, 31, 0.12));
-    color: var(--text-primary);
-    transform: translateX(4px);
-  }
-
-  .nav-menu a:hover::before,
-  .nav-menu a.active::before {
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
+    color: var(--accent-end);
+    background: none;
+    transform: none;
   }
 
   .nav-menu a::after { display: none; }
