@@ -159,7 +159,12 @@ function subscribeToScroll(handler) {
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenuState(false)));
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') setMenuState(false);
+    if (e.key !== 'Escape' || !menu.classList.contains('open')) return;
+    const activeElement = document.activeElement;
+    if (!activeElement || activeElement === document.body || activeElement === document.documentElement
+      || menu.contains(activeElement) || toggle.contains(activeElement)) {
+      setMenuState(false);
+    }
   });
 
   document.addEventListener('click', e => {
@@ -170,11 +175,7 @@ function subscribeToScroll(handler) {
   const handleMediaChange = event => {
     if (event.matches) setMenuState(false);
   };
-  if (mediaQuery.addEventListener) {
-    mediaQuery.addEventListener('change', handleMediaChange);
-  } else {
-    mediaQuery.addListener(handleMediaChange);
-  }
+  mediaQuery.addEventListener('change', handleMediaChange);
 })();
 
 // Scrollbar
