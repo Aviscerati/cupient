@@ -399,6 +399,10 @@ section {
   border-bottom: 1px solid var(--border-subtle);
 }
 
+section[id] {
+  scroll-margin-top: var(--nav-h);
+}
+
 section:not(#hero) {
   content-visibility: auto;
   contain-intrinsic-size: 1px var(--section-intrinsic-size);
