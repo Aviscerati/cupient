@@ -29,9 +29,9 @@
   --radius-button: var(--radius-sm);
   --shadow-subtle: inset 0 1px 0 rgba(255, 255, 255, 0.02);
   --shadow-subtle-strong: inset 0 1px 0 rgba(255, 255, 255, 0.025);
-  --surface-bg: var(--bg-card);
-  --surface-border: var(--border-subtle);
-  --surface-shadow: var(--shadow-subtle);
+  --surface-bg-default: var(--bg-card);
+  --surface-border-default: var(--border-subtle);
+  --surface-shadow-default: var(--shadow-subtle);
 
   --fs-tag: 10px;
   --fs-body: 15px;
@@ -224,10 +224,10 @@ nav, section, footer {
 }
 
 :where(.highlight-card, .skill-card, .project-card, .contact-card, .error-card) {
-  background: var(--surface-bg);
-  border: 1px solid var(--surface-border);
+  background: var(--surface-bg, var(--surface-bg-default));
+  border: 1px solid var(--surface-border, var(--surface-border-default));
   border-radius: var(--surface-radius, var(--radius-lg));
-  box-shadow: var(--surface-shadow);
+  box-shadow: var(--surface-shadow, var(--surface-shadow-default));
 }
 
 @media (hover: none) and (pointer: coarse) {
@@ -1090,7 +1090,7 @@ nav a:hover::after, nav a.active::after {
 .project-card {
   display: flex;
   flex-direction: column;
-  clip-path: inset(0 round var(--surface-radius, var(--radius-lg)));
+  clip-path: inset(0 round var(--surface-radius));
   transform-style: preserve-3d;
   transition: border-color 0.25s, box-shadow 0.25s;
   --surface-radius: var(--radius-lg);
