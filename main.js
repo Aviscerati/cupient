@@ -143,6 +143,7 @@ function subscribeToScroll(handler) {
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.querySelector('.nav-menu');
   const nav = document.querySelector('nav');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
   const toggleLabel = toggle?.querySelector('.nav-toggle-label');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -204,8 +205,41 @@ function subscribeToScroll(handler) {
       || menu.contains(activeElement) || toggle.contains(activeElement);
   }
 
+  function navigateToHash(hash) {
+    if (!hash || hash === '#') return false;
+    const target = document.querySelector(hash);
+    if (!target) return false;
+
+    const currentScroll = window.scrollY || document.documentElement.scrollTop || 0;
+    const targetTop = target.getBoundingClientRect().top + currentScroll - getNavHeight();
+    const top = Math.max(0, Math.round(targetTop));
+    const immediate = prefersReducedMotion.matches;
+
+    if (hasLenis) {
+      lenis.scrollTo(top, { immediate });
+    } else {
+      window.scrollTo({ top, behavior: immediate ? 'auto' : 'smooth' });
+    }
+
+    if (window.location.hash !== hash) {
+      history.pushState(null, '', hash);
+    } else {
+      history.replaceState(null, '', hash);
+    }
+
+    return true;
+  }
+
   toggle.addEventListener('click', () => setMenuState(!menu.classList.contains('open')));
-  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenuState(false)));
+  navLinks.forEach(link => {
+    link.addEventListener('click', event => {
+      if (event.button !== 0 || event.defaultPrevented) return;
+      if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+      event.preventDefault();
+      if (!navigateToHash(link.getAttribute('href'))) return;
+      setMenuState(false);
+    });
+  });
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && shouldHandleEscapeKey()) setMenuState(false);
