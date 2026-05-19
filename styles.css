@@ -204,6 +204,7 @@ nav, section, footer {
   letter-spacing: var(--pill-tracking, 0.14em);
   text-transform: var(--pill-case, uppercase);
   text-decoration: none;
+  box-shadow: 0 0 0 0 transparent;
   transition: border-color 0.2s, color 0.2s, background-color 0.2s, box-shadow 0.2s;
 }
 
@@ -316,7 +317,7 @@ nav, section, footer {
   --pill-pad: 8px 18px;
   --pill-size: var(--fs-link);
   --pill-case: none;
-  --pill-tracking: 0.06em;
+  --pill-tracking: 0.03em;
 }
 
 .contact-links a:hover,
@@ -1243,10 +1244,10 @@ nav a:hover::after, nav a.active::after {
 }
 
 .contact-links a {
-  --pill-pad: 8px 16px;
+  --pill-pad: 9px 14px;
   --pill-size: var(--fs-link);
   --pill-case: none;
-  --pill-tracking: 0.06em;
+  --pill-tracking: 0.03em;
 }
 
 footer {
