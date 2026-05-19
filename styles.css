@@ -1091,6 +1091,7 @@ nav a:hover::after, nav a.active::after {
   display: flex;
   flex-direction: column;
   clip-path: inset(0 round 10px);
+  clip-path: inset(0 round var(--surface-radius));
   transform-style: preserve-3d;
   transition: border-color 0.25s, box-shadow 0.25s;
   --surface-radius: var(--radius-lg);
