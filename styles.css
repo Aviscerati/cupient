@@ -840,10 +840,6 @@ nav a:hover::after, nav a.active::after {
   margin-top: 18px;
 }
 
-.stat-chip {
-  --pill-pad: 5px 13px;
-}
-
 .stat-chip:hover {
   border-color: rgba(230, 57, 70, 0.35);
   color: var(--text-primary);
@@ -1477,7 +1473,6 @@ footer {
   
   .contact-grid { grid-template-columns: 1.1fr 1fr; gap: 22px; }
   .contact-sub { max-width: 600px; font-size: 18px; }
-  .contact-links a { --pill-size: var(--fs-link); }
   .footer-grid {
     grid-template-columns: 1.4fr auto auto;
     align-items: start;
