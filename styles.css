@@ -216,16 +216,10 @@ nav, section, footer {
   }
 
   .btn:active,
+  .nav-toggle:active,
   .contact-links a:active,
   .error-link:active {
-    transform: translateY(1px) scale(0.98);
-    opacity: 0.85;
-    background-color: var(--accent-ghost);
-    border-color: var(--accent-start);
-  }
-
-  .nav-toggle:active {
-    transform: translateY(1px);
+    transform: translateY(1px) scale(var(--press-scale, 0.98));
     opacity: 0.85;
     background-color: var(--accent-ghost);
     border-color: var(--accent-start);
@@ -474,6 +468,7 @@ nav a:hover::after, nav a.active::after {
 }
 
 .nav-toggle {
+  --press-scale: 1;
   display: none;
   align-items: center;
   gap: 8px;
@@ -484,7 +479,7 @@ nav a:hover::after, nav a.active::after {
   border-radius: 12px;
   cursor: pointer;
   color: var(--text-primary);
-  transition: background 0.2s ease, border-color 0.2s ease, width 0.25s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 0.2s ease, border-color 0.2s ease, width 0.25s ease, transform 0.2s ease;
 }
 
 .nav-toggle-icon {
