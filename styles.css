@@ -1090,7 +1090,7 @@ nav a:hover::after, nav a.active::after {
 .project-card {
   display: flex;
   flex-direction: column;
-  clip-path: inset(0 round var(--surface-radius));
+  clip-path: inset(0 round 10px);
   transform-style: preserve-3d;
   transition: border-color 0.25s, box-shadow 0.25s;
   --surface-radius: var(--radius-lg);
