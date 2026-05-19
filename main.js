@@ -143,7 +143,7 @@ function subscribeToScroll(handler) {
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.querySelector('.nav-menu');
   const nav = document.querySelector('nav');
-  const navLinks = Array.from(document.querySelectorAll('nav a[href^="#"]'));
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
   const toggleLabel = toggle?.querySelector('.nav-toggle-label');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -233,7 +233,7 @@ function subscribeToScroll(handler) {
   toggle.addEventListener('click', () => setMenuState(!menu.classList.contains('open')));
   navLinks.forEach(link => {
     link.addEventListener('click', event => {
-      if (event.defaultPrevented || event.button !== 0) return;
+      if (event.button !== 0 || event.defaultPrevented) return;
       if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
       event.preventDefault();
       if (!navigateToHash(link.getAttribute('href'))) return;
