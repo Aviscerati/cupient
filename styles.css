@@ -397,7 +397,6 @@ section {
   justify-content: safe center;
   padding: calc(var(--nav-h) + 20px) var(--pad-x) calc(var(--pad-y) + 20px);
   border-bottom: 1px solid var(--border-subtle);
-  scroll-margin-top: var(--nav-h);
 }
 
 section:not(#hero) {
