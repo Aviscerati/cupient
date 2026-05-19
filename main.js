@@ -79,7 +79,7 @@ const getNavHeight = () => {
 const lenis = (!isTouch && typeof window.Lenis === 'function')
   ? new window.Lenis({
       autoRaf: true,
-      anchors: { offset: -getNavHeight() },
+      anchors: { offset: 0 },
       stopInertiaOnNavigate: true,
     })
   : null;
