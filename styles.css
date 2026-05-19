@@ -18,6 +18,21 @@
   --font-heading: 'Syne', sans-serif;
   --font-body: 'Karla', sans-serif;
 
+  --radius-xxs: 2px;
+  --radius-sm: 7px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-pill: 999px;
+
+  --radius-button: var(--radius-sm);
+  --shadow-subtle: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  --shadow-subtle-strong: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  --surface-bg: var(--bg-card);
+  --surface-border: var(--border-subtle);
+  --surface-shadow: var(--shadow-subtle);
+
   --fs-tag: 10px;
   --fs-body: 15px;
   --fs-h3: 17px;
@@ -166,7 +181,7 @@ nav, section, footer {
   text-decoration: none;
   font-size: 13px;
   font-weight: 500;
-  border-radius: 7px;
+  border-radius: var(--radius-button);
   letter-spacing: 0.4px;
   transition: background-color 0.2s, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
   position: relative;
@@ -195,7 +210,7 @@ nav, section, footer {
   align-items: center;
   justify-content: center;
   padding: var(--pill-pad, 4px 12px);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--pill-border, var(--border-tag));
   background: var(--pill-bg, rgba(255, 255, 255, 0.02));
   color: var(--pill-color, var(--text-muted));
@@ -206,6 +221,13 @@ nav, section, footer {
   text-decoration: none;
   box-shadow: 0 0 0 0 transparent;
   transition: border-color 0.2s, color 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+:where(.highlight-card, .skill-card, .project-card, .contact-card, .error-card) {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--surface-radius, var(--radius-lg));
+  box-shadow: var(--surface-shadow);
 }
 
 @media (hover: none) and (pointer: coarse) {
@@ -249,13 +271,10 @@ nav, section, footer {
 .error-card {
   width: min(720px, 100%);
   padding: 48px 44px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
   position: relative;
   overflow: hidden;
   text-align: left;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  --surface-radius: var(--radius-xl);
 }
 
 .error-card::before {
@@ -360,14 +379,14 @@ nav, section, footer {
 
 .scrollbar-track {
   position: absolute; inset: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(255, 255, 255, 0.04);
 }
 
 .scrollbar-thumb {
   position: absolute;
   left: 0; width: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: linear-gradient(180deg, var(--accent-start), var(--accent-end));
 }
 
@@ -378,6 +397,7 @@ section {
   justify-content: safe center;
   padding: calc(var(--nav-h) + 20px) var(--pad-x) calc(var(--pad-y) + 20px);
   border-bottom: 1px solid var(--border-subtle);
+  scroll-margin-top: var(--nav-h);
 }
 
 section:not(#hero) {
@@ -453,7 +473,7 @@ nav a::after {
   width: 100%;
   height: 2px;
   background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
-  border-radius: 2px;
+  border-radius: var(--radius-xxs);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -477,7 +497,7 @@ nav a:hover::after, nav a.active::after {
   padding: 0 12px;
   background: transparent;
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
   cursor: pointer;
   color: var(--text-primary);
   transition: background 0.2s ease, border-color 0.2s ease, width 0.25s ease, transform 0.25s ease;
@@ -514,7 +534,7 @@ nav a:hover::after, nav a.active::after {
   width: 18px;
   height: 2px;
   background: currentColor;
-  border-radius: 2px;
+  border-radius: var(--radius-xxs);
   transition: transform 0.2s ease, opacity 0.2s ease;
   transform-origin: center;
 }
@@ -873,15 +893,11 @@ nav a:hover::after, nav a.active::after {
 }
 
 .highlight-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
   padding: 16px;
   color: var(--text-muted);
   position: relative;
   overflow: hidden;
   transition: border-color 0.22s, transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
 .highlight-card::after {
@@ -971,9 +987,6 @@ nav a:hover::after, nav a.active::after {
 }
 
 .skill-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
   padding: 20px 18px 18px;
   color: var(--text-primary);
   font-size: var(--fs-body);
@@ -985,7 +998,8 @@ nav a:hover::after, nav a.active::after {
   position: relative;
   overflow: hidden;
   transition: border-color 0.22s, color 0.22s, background-color 0.22s, transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  --surface-radius: var(--radius-md);
+  --surface-shadow: var(--shadow-subtle-strong);
 }
 
 .skill-card::after {
@@ -1074,15 +1088,12 @@ nav a:hover::after, nav a.active::after {
 }
 
 .project-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  clip-path: inset(0 round 10px);
+  clip-path: inset(0 round var(--surface-radius, var(--radius-lg)));
   transform-style: preserve-3d;
   transition: border-color 0.25s, box-shadow 0.25s;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  --surface-radius: var(--radius-lg);
 }
 
 .project-card:hover {
@@ -1194,9 +1205,9 @@ nav a:hover::after, nav a.active::after {
 }
 
 .contact-card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
-  border: 1px solid var(--border-subtle);
-  border-radius: 16px;
+  --surface-bg: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  --surface-radius: var(--radius-2xl);
+  --surface-shadow: none;
   padding: 22px 20px;
   display: flex;
   flex-direction: column;
@@ -1408,6 +1419,7 @@ footer {
     --pad-y: 80px;
     --heading-gap: 36px;
     --nav-h: 64px;
+    --radius-button: var(--radius-md);
   }
 
   #about { flex-direction: row; text-align: left; align-items: center; gap: 48px; }
@@ -1427,7 +1439,7 @@ footer {
   .hero-badge { width: 90px; height: 90px; bottom: calc(40px + 28px); }
   .hero-badge-arrow { font-size: 20px; }
   
-  .btn { padding: 13px 32px; font-size: 14px; border-radius: 8px; }
+  .btn { padding: 13px 32px; font-size: 14px; }
 
   nav .logo { font-size: 20px; }
   nav a { font-size: 15px; }
