@@ -235,8 +235,8 @@ function subscribeToScroll(handler) {
     link.addEventListener('click', event => {
       if (event.defaultPrevented || event.button !== 0) return;
       if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
-      if (!navigateToHash(link.getAttribute('href'))) return;
       event.preventDefault();
+      if (!navigateToHash(link.getAttribute('href'))) return;
       setMenuState(false);
     });
   });
