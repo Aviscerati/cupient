@@ -1,4 +1,7 @@
-const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+const hasTouchPoints = Number(navigator.maxTouchPoints) > 0;
+const isTouch = hasCoarsePointer || (hasTouchPoints && !hasFinePointer);
 const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const saveDataEnabled = navigator.connection?.saveData === true;
 const REDUCED_EFFECTS_MEMORY_THRESHOLD_GB = 4;
