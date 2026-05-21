@@ -71,6 +71,24 @@
   box-sizing: border-box;
 }
 
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: 9999;
+  padding: 8px 16px;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 html {
   scroll-behavior: auto;
   scrollbar-width: none;

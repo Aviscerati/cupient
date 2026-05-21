@@ -7,9 +7,11 @@
     <meta name="application-name" content="cupient" />
     <meta name="apple-mobile-web-app-title" content="cupient" />
 
-    <title>cupient</title>
-    <meta name="description" content="Portfolio of April Vismanos, an IT student at CSU." />
+    <title>Andy Vismanos | IT Student Portfolio | cupient</title>
+    <meta name="description" content="Andy Vismanos is a first-year IT student at CSU who builds websites and explores programming. Browse skills, projects, and contact info on this portfolio." />
     <meta name="author" content="April Anderson P. Vismanos" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="Andy Vismanos, cupient, IT student, CSU, portfolio, web developer, HTML, CSS, JavaScript, Python, front-end" />
     <link rel="canonical" href="https://cupient.tech/" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://cupient.tech/sitemap.xml" />
     <link rel="alternate" type="text/markdown" href="https://cupient.tech/index.md" />
@@ -21,27 +23,76 @@
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://cupient.tech/" />
-    <meta property="og:title" content="cupient | Portfolio" />
-    <meta property="og:description" content="Portfolio of April Vismanos, IT student at CSU." />
+    <meta property="og:title" content="Andy Vismanos | IT Student Portfolio | cupient" />
+    <meta property="og:description" content="Andy Vismanos is a first-year IT student at CSU who builds websites and explores programming. Browse skills, projects, and contact info." />
     <meta property="og:image" content="https://cupient.tech/logo.png" />
+    <meta property="og:image:alt" content="cupient logo — portfolio of Andy Vismanos" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="cupient" />
 
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="cupient | Portfolio" />
-    <meta name="twitter:description" content="Portfolio of April Vismanos, IT student at CSU." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Andy Vismanos | IT Student Portfolio | cupient" />
+    <meta name="twitter:description" content="Andy Vismanos is a first-year IT student at CSU who builds websites and explores programming. Browse skills, projects, and contact info." />
+    <meta name="twitter:image" content="https://cupient.tech/logo.png" />
+    <meta name="twitter:image:alt" content="cupient logo — portfolio of Andy Vismanos" />
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "April Anderson P. Vismanos",
-      "alternateName": "cupient",
-      "url": "https://cupient.tech/",
-      "jobTitle": "Information Technologies Student",
-      "alumniOf": "CSU",
-      "knowsAbout": ["HTML", "CSS", "JavaScript", "Lua", "Python", "C"],
-      "sameAs": [
-        "https://github.com/cupient",
-        "https://linkedin.com/in/cupient"
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://cupient.tech/#person",
+          "name": "April Anderson P. Vismanos",
+          "givenName": "April Anderson",
+          "familyName": "Vismanos",
+          "alternateName": ["cupient", "Andy"],
+          "url": "https://cupient.tech/",
+          "jobTitle": "Information Technologies Student",
+          "description": "First-year IT student at CSU building websites with HTML, CSS, and JavaScript.",
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "CSU"
+          },
+          "knowsAbout": ["HTML", "CSS", "JavaScript", "Lua", "Python", "C", "Web Development", "Front-End Development"],
+          "email": "andy@cupient.tech",
+          "sameAs": [
+            "https://github.com/cupient",
+            "https://linkedin.com/in/cupient",
+            "https://facebook.com/cupient"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://cupient.tech/#website",
+          "name": "cupient",
+          "url": "https://cupient.tech/",
+          "description": "Personal portfolio website of April Anderson P. Vismanos, an IT student at CSU.",
+          "author": { "@id": "https://cupient.tech/#person" },
+          "inLanguage": "en-US",
+          "copyrightHolder": { "@id": "https://cupient.tech/#person" }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://cupient.tech/#webpage",
+          "url": "https://cupient.tech/",
+          "name": "Andy Vismanos | IT Student Portfolio | cupient",
+          "description": "Andy Vismanos is a first-year IT student at CSU who builds websites and explores programming. Browse skills, projects, and contact info.",
+          "isPartOf": { "@id": "https://cupient.tech/#website" },
+          "about": { "@id": "https://cupient.tech/#person" },
+          "inLanguage": "en-US",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://cupient.tech/"
+              }
+            ]
+          }
+        }
       ]
     }
     </script>
@@ -60,13 +111,14 @@
   </head>
 
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="scrollbar" aria-hidden="true">
       <div class="scrollbar-track"></div>
       <div class="scrollbar-thumb"></div>
     </div>
 
-    <nav>
-      <a href="#hero" class="logo-link">
+    <nav aria-label="Main navigation">
+      <a href="#hero" class="logo-link" aria-label="Go to top of page">
         <svg class="nav-logo-svg" viewBox="0 0 512 512" width="40" height="40">
           <defs>
             <linearGradient id="northstarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -98,6 +150,7 @@
       </ul>
     </nav>
 
+    <main id="main-content">
     <section id="hero">
       <div class="hero-bg" aria-hidden="true">
         <svg class="hero-bg-svg" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
@@ -353,6 +406,8 @@
         </article>
       </div>
     </section>
+
+    </main>
 
     <footer>
       <div class="footer-grid">
