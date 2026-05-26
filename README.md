@@ -11,8 +11,6 @@ This site includes lightweight agent-readiness files and metadata:
 
 ## Skills
 
-This site and its agents support a range of skills for automation, planning, and review.
-
 ## Copilot Agent Skills
 The Copilot CLI agent includes the following skills used to plan, implement, and review work in this repo.
 
