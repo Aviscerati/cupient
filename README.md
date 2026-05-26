@@ -9,8 +9,6 @@ This site includes lightweight agent-readiness files and metadata:
 - `https://cupient.tech/llms.txt` with agent-oriented site summary and key links
 - `https://cupient.tech/agent.json` as minimal protocol/discovery metadata
 
-## Skills
-
 ## Copilot Agent Skills
 The Copilot CLI agent includes the following skills used to plan, implement, and review work in this repo.
 
