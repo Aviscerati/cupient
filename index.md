@@ -11,7 +11,7 @@ I am an Information Technologies student at CSU.
 HTML, CSS, JavaScript, Lua, Python, C
 
 ## Contact
-- Email: cupient@proton.com
-- GitHub: https://github.com/aviderant
+- Email: andy@cupient.tech
+- GitHub: https://github.com/cupient
 - LinkedIn: https://linkedin.com/in/cupient
 - Facebook: https://facebook.com/cupient

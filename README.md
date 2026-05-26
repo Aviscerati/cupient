@@ -29,5 +29,3 @@ The Copilot CLI agent includes the following skills used to plan, implement, and
 | writing-plans | Produce a detailed implementation plan from approved design. |
 | writing-skills | Create or update skills and verify they work. |
 | customize-cloud-agent | Configure Copilot cloud agent setup steps and environment. |
-
-## Contact

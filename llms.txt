@@ -10,7 +10,7 @@ cupient.tech is the personal portfolio website of April Anderson P. Vismanos (cu
 
 ## Key links
 - Home: https://cupient.tech/
-- GitHub: https://github.com/aviderant
+- GitHub: https://github.com/cupient
 - LinkedIn: https://linkedin.com/in/cupient
 - Facebook: https://facebook.com/cupient
-- Email: mailto:cupient@proton.com
+- Email: mailto:andy@cupient.tech
