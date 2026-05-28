@@ -257,8 +257,6 @@ body::after {
   position: fixed;
   inset: 0;
   background: var(--overlay-bg);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 150;
@@ -266,6 +264,8 @@ body::after {
 }
 
 body.nav-open::after {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   opacity: 1;
   pointer-events: auto;
 }
@@ -1577,7 +1577,6 @@ footer {
     transition: transform 0.2s ease, opacity 0.2s ease;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    will-change: transform;
     z-index: 210;
   }
 
@@ -1739,7 +1738,7 @@ footer {
 
 .grain-overlay {
   position: fixed;
-  inset: 0;
+  inset: -40px;
   pointer-events: none;
   z-index: 9997;
   opacity: 0.04;
@@ -1748,21 +1747,22 @@ footer {
   background-repeat: repeat;
   background-size: 160px 160px;
   animation: grain-shift 0.55s steps(1) infinite;
+  will-change: transform;
 }
 
 body.is-scrolling .grain-overlay { animation-play-state: paused; }
 
 @keyframes grain-shift {
-  0% { background-position: 0 0; }
-  11% { background-position: -5% -10%; }
-  22% { background-position: -15% 5%; }
-  33% { background-position: 7% -25%; }
-  44% { background-position: -5% 25%; }
-  55% { background-position: -15% 10%; }
-  66% { background-position: 15% 0%; }
-  77% { background-position: 0% 15%; }
-  88% { background-position: 3% 35%; }
-  100% { background-position: -10% 10%; }
+  0%   { transform: translate(0px, 0px); }
+  11%  { transform: translate(-5px, -10px); }
+  22%  { transform: translate(-15px, 5px); }
+  33%  { transform: translate(7px, -25px); }
+  44%  { transform: translate(-5px, 25px); }
+  55%  { transform: translate(-15px, 10px); }
+  66%  { transform: translate(15px, 0px); }
+  77%  { transform: translate(0px, 15px); }
+  88%  { transform: translate(3px, 35px); }
+  100% { transform: translate(-10px, 10px); }
 }
 
 .cursor-glow {
