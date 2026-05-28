@@ -3,6 +3,9 @@ const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
 const hasTouchPoints = Number(navigator.maxTouchPoints) > 0;
 const isTouch = hasCoarsePointer || (hasTouchPoints && !hasFinePointer);
 const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Shared live MQL — used by Navbar and Skills Carousel IIFEs so they can
+// both listen for changes without each creating their own MediaQueryList.
+const prefersReducedMotionMQL = window.matchMedia('(prefers-reduced-motion: reduce)');
 const saveDataEnabled = navigator.connection?.saveData === true;
 const REDUCED_EFFECTS_MEMORY_THRESHOLD_GB = 4;
 const REDUCED_EFFECTS_CPU_THRESHOLD = 4;
@@ -171,14 +174,13 @@ const getNavHeight = () => {
 const lenis = (!isTouch && typeof window.Lenis === 'function')
   ? new window.Lenis({
       autoRaf: true,
-      anchors: { offset: 0 },
       stopInertiaOnNavigate: true,
     })
   : null;
 const hasLenis = Boolean(lenis);
 
 if (!hasLenis && isTouch) {
-  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reducedMotionQuery = prefersReducedMotionMQL;
   const updateSmoothScrollPreference = () => {
     document.documentElement.classList.toggle('smooth-scroll', !reducedMotionQuery.matches);
   };
@@ -237,7 +239,7 @@ function subscribeToScroll(handler) {
   const nav = document.querySelector('nav');
   const navLinks = document.querySelectorAll('nav a[href^="#"]');
   const toggleLabel = toggle?.querySelector('.nav-toggle-label');
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const prefersReducedMotion = prefersReducedMotionMQL;
 
   if (!toggle || !menu) return;
 
@@ -445,7 +447,7 @@ function subscribeToScroll(handler) {
 
 // Cursor Glow & Desktop Hover Effects
 (() => {
-  if (isTouch || isReducedMotion || saveDataEnabled || !window.matchMedia('(pointer: fine)').matches) return;
+  if (isTouch || isReducedMotion || saveDataEnabled || !hasFinePointer) return;
 
   const glow = document.createElement('div');
   glow.className = 'cursor-glow';
@@ -609,7 +611,7 @@ function subscribeToScroll(handler) {
   const MIN_COPIES = 2;
   const VIEWPORT_MULTIPLIER = 2;
   const SCROLL_SPEED_PX_PER_SEC = 28;
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const prefersReducedMotion = prefersReducedMotionMQL;
   if (!track.dataset.carouselBase) track.dataset.carouselBase = track.innerHTML;
 
   let baseWidth = 0;

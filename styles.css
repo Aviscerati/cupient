@@ -50,8 +50,8 @@
   --font-body: 'Karla', sans-serif;
 
   --radius-xxs: 2px;
-  --radius-sm: 7px;
-  --radius-md: 8px;
+  --radius-sm: 7px;  /* mobile button radius */
+  --radius-md: 8px;  /* desktop button radius (see --radius-button override at 640px) */
   --radius-lg: 10px;
   --radius-xl: 12px;
   --radius-2xl: 16px;
@@ -85,6 +85,9 @@
   --contact-intrinsic-size: 760px;
 }
 
+/* LIGHT THEME — system preference (no stored choice).
+   JS removes [data-theme] in this case, so the CSS media query drives theming.
+   Keep every token below in sync with :root[data-theme="light"] further down. */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
     color-scheme: light;
@@ -137,6 +140,8 @@
   }
 }
 
+/* LIGHT THEME — manual toggle ([data-theme="light"] set by JS).
+   Keep every token below in sync with the @media block above. */
 :root[data-theme="light"] {
   color-scheme: light;
   --bg-main: #f6f2ed;
@@ -407,6 +412,11 @@ nav, section, footer {
     opacity: 0.7;
   }
 }
+
+/* ─── 404 / error page ───────────────────────────────────────────────────────
+   These styles are NOT used by index.html. They belong to a separate
+   404.html (or equivalent). Consider moving them to a dedicated error.css.
+   ──────────────────────────────────────────────────────────────────────────── */
 
 /* 404 page */
 .error-page-main {
