@@ -329,8 +329,15 @@ function subscribeToScroll(handler) {
     link.addEventListener('click', event => {
       if (event.button !== 0 || event.defaultPrevented) return;
       if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+      const hash = link.getAttribute('href');
       event.preventDefault();
-      if (!navigateToHash(link.getAttribute('href'))) return;
+      // If the target section doesn't exist on this page (e.g. 404.html),
+      // navigate to the homepage with the hash so the browser handles scrolling.
+      if (!document.querySelector(hash)) {
+        window.location.href = '/' + hash;
+        return;
+      }
+      navigateToHash(hash);
       setMenuState(false);
     });
   });
