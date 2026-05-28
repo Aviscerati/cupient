@@ -13,6 +13,95 @@ const hardwareConcurrency = Number(navigator.hardwareConcurrency);
 const isLowEndDevice = (Number.isFinite(deviceMemory) && deviceMemory > 0 && deviceMemory <= REDUCED_EFFECTS_MEMORY_THRESHOLD_GB)
   || (Number.isFinite(hardwareConcurrency) && hardwareConcurrency > 0 && hardwareConcurrency <= REDUCED_EFFECTS_CPU_THRESHOLD);
 
+const THEME_STORAGE_KEY = 'cupient-theme';
+const THEME_LIGHT = 'light';
+const THEME_DARK = 'dark';
+const themeToggle = document.querySelector('.theme-toggle');
+const themeToggleState = themeToggle?.querySelector('.theme-toggle-state');
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+const themeMedia = window.matchMedia('(prefers-color-scheme: light)');
+const themeColors = {
+  [THEME_DARK]: '#0a0a0c',
+  [THEME_LIGHT]: '#f6f2ed'
+};
+
+function getStoredTheme() {
+  try {
+    return localStorage.getItem(THEME_STORAGE_KEY);
+  } catch (error) {
+    return null;
+  }
+}
+
+function setStoredTheme(value) {
+  try {
+    if (value) {
+      localStorage.setItem(THEME_STORAGE_KEY, value);
+    } else {
+      localStorage.removeItem(THEME_STORAGE_KEY);
+    }
+  } catch (error) {
+    // Ignore storage failures (privacy mode, denied access).
+  }
+}
+
+function getSystemTheme() {
+  return themeMedia.matches ? THEME_LIGHT : THEME_DARK;
+}
+
+function updateThemeMeta(theme) {
+  if (!themeMeta) return;
+  themeMeta.setAttribute('content', themeColors[theme] || themeColors[THEME_DARK]);
+}
+
+function updateThemeToggle(theme) {
+  if (!themeToggle) return;
+  const isLight = theme === THEME_LIGHT;
+  themeToggle.setAttribute('aria-pressed', String(isLight));
+  themeToggle.setAttribute('aria-label', `Switch to ${isLight ? 'dark' : 'light'} theme`);
+  if (themeToggleState) {
+    themeToggleState.textContent = isLight ? 'Light' : 'Dark';
+  }
+}
+
+function applyTheme(theme, { persist = false } = {}) {
+  if (persist) {
+    document.documentElement.setAttribute('data-theme', theme);
+    setStoredTheme(theme);
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+  updateThemeMeta(theme);
+  updateThemeToggle(theme);
+}
+
+const storedTheme = getStoredTheme();
+if (storedTheme === THEME_LIGHT || storedTheme === THEME_DARK) {
+  applyTheme(storedTheme, { persist: true });
+} else {
+  applyTheme(getSystemTheme());
+}
+
+if (typeof themeMedia.addEventListener === 'function') {
+  themeMedia.addEventListener('change', () => {
+    if (getStoredTheme()) return;
+    applyTheme(getSystemTheme());
+  });
+} else if (typeof themeMedia.addListener === 'function') {
+  themeMedia.addListener(() => {
+    if (getStoredTheme()) return;
+    applyTheme(getSystemTheme());
+  });
+}
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || getSystemTheme();
+    const nextTheme = currentTheme === THEME_LIGHT ? THEME_DARK : THEME_LIGHT;
+    applyTheme(nextTheme, { persist: true });
+  });
+}
+
 // Keep a stable viewport height on mobile to avoid URL-bar scroll resize jumps.
 (() => {
   const root = document.documentElement;
