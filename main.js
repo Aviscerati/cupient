@@ -255,31 +255,9 @@ function subscribeToScroll(handler) {
     if (!toggleLabel) return;
     const nextLabel = isOpen ? 'Close' : 'Menu';
     if (toggleLabel.textContent === nextLabel) return;
-
-    if (prefersReducedMotion.matches) {
-      toggleLabel.textContent = nextLabel;
-      toggle.style.width = '';
-      return;
-    }
-
-    const startWidth = toggle.getBoundingClientRect().width;
     toggleLabel.textContent = nextLabel;
-    const endWidth = toggle.getBoundingClientRect().width;
+    toggle.style.width = '';
     animateToggleLabel();
-
-    if (Math.abs(endWidth - startWidth) < 1) return;
-
-    toggle.style.width = `${startWidth}px`;
-    requestAnimationFrame(() => {
-      toggle.style.width = `${endWidth}px`;
-    });
-
-    const handleTransitionEnd = event => {
-      if (event.propertyName !== 'width') return;
-      toggle.style.width = '';
-      toggle.removeEventListener('transitionend', handleTransitionEnd);
-    };
-    toggle.addEventListener('transitionend', handleTransitionEnd);
   }
 
   function setMenuState(isOpen) {
@@ -879,8 +857,15 @@ function subscribeToScroll(handler) {
   requestUpdate();
 })();
 
-(function(c,l,a,r,i,t,y){
-    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
-    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-})(window, document, "clarity", "script", "wx9phwlmsr");
+function _loadClarity() {
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "wx9phwlmsr");
+}
+if ('requestIdleCallback' in window) {
+  requestIdleCallback(_loadClarity, { timeout: 4000 });
+} else {
+  setTimeout(_loadClarity, 3000);
+}
