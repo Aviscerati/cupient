@@ -237,10 +237,7 @@ function subscribeToScroll(handler) {
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.querySelector('.nav-menu');
   const nav = document.querySelector('nav');
-  // Select all hash links on the page, not just nav links, so elements like
-  // the hero "More about me" button are also routed through Lenis instead of
-  // firing a native anchor scroll that Lenis would fight against.
-  const navLinks = document.querySelectorAll('a[href^="#"]');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
   const toggleLabel = toggle?.querySelector('.nav-toggle-label');
   const prefersReducedMotion = prefersReducedMotionMQL;
 
@@ -286,6 +283,7 @@ function subscribeToScroll(handler) {
   }
 
   function setMenuState(isOpen) {
+    menu.style.willChange = 'transform';
     menu.classList.toggle('open', isOpen);
     toggle.classList.toggle('active', isOpen);
     toggle.setAttribute('aria-expanded', String(isOpen));
@@ -293,6 +291,9 @@ function subscribeToScroll(handler) {
     document.body.classList.toggle('nav-open', isOpen);
     if (nav) nav.classList.toggle('menu-open', isOpen);
     updateToggleLabel(isOpen);
+    menu.addEventListener('transitionend', () => {
+      menu.style.willChange = '';
+    }, { once: true });
   }
 
   function shouldHandleEscapeKey() {
@@ -332,15 +333,8 @@ function subscribeToScroll(handler) {
     link.addEventListener('click', event => {
       if (event.button !== 0 || event.defaultPrevented) return;
       if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
-      const hash = link.getAttribute('href');
       event.preventDefault();
-      // If the target section doesn't exist on this page (e.g. 404.html),
-      // navigate to the homepage with the hash so the browser handles scrolling.
-      if (!document.querySelector(hash)) {
-        window.location.href = '/' + hash;
-        return;
-      }
-      navigateToHash(hash);
+      if (!navigateToHash(link.getAttribute('href'))) return;
       setMenuState(false);
     });
   });
@@ -750,8 +744,10 @@ function subscribeToScroll(handler) {
   carousel.addEventListener('pointercancel', handlePointerUp);
   carousel.addEventListener('pointerleave', handlePointerUp);
 
+  let carouselResizeTimer;
   window.addEventListener('resize', () => {
-    updateCarousel();
+    clearTimeout(carouselResizeTimer);
+    carouselResizeTimer = setTimeout(updateCarousel, 150);
   });
 
   const handleMotionChange = () => {
