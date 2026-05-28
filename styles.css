@@ -263,6 +263,8 @@ body::after {
   position: fixed;
   inset: 0;
   background: var(--overlay-bg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 150;
@@ -270,8 +272,6 @@ body::after {
 }
 
 body.nav-open::after {
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   opacity: 1;
   pointer-events: auto;
 }
