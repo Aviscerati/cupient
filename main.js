@@ -237,7 +237,10 @@ function subscribeToScroll(handler) {
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.querySelector('.nav-menu');
   const nav = document.querySelector('nav');
-  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  // Select all hash links on the page, not just nav links, so elements like
+  // the hero "More about me" button are also routed through Lenis instead of
+  // firing a native anchor scroll that Lenis would fight against.
+  const navLinks = document.querySelectorAll('a[href^="#"]');
   const toggleLabel = toggle?.querySelector('.nav-toggle-label');
   const prefersReducedMotion = prefersReducedMotionMQL;
 
