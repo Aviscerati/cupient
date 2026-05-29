@@ -22,6 +22,7 @@
   --halo-primary: rgba(230, 57, 70, 0.065);
   --halo-secondary: rgba(244, 131, 31, 0.05);
   --hero-dot: rgba(255, 255, 255, 0.065);
+  --hero-fade-end: 80%;
   --hero-ticker-bg: rgba(10, 10, 12, 0.6);
   --surface-sheen: rgba(255, 255, 255, 0.045);
   --surface-sheen-strong: rgba(255, 255, 255, 0.05);
@@ -110,7 +111,8 @@
     --overlay-bg-strong: rgba(10, 10, 14, 0.38);
     --halo-primary: rgba(230, 57, 70, 0.12);
     --halo-secondary: rgba(244, 131, 31, 0.1);
-    --hero-dot: rgba(0, 0, 0, 0.055);
+    --hero-dot: rgba(0, 0, 0, 0.22);
+    --hero-fade-end: 90%;
     --hero-ticker-bg: rgba(255, 255, 255, 0.7);
     --surface-sheen: rgba(0, 0, 0, 0.045);
     --surface-sheen-strong: rgba(0, 0, 0, 0.04);
@@ -164,7 +166,8 @@
   --overlay-bg-strong: rgba(10, 10, 14, 0.38);
   --halo-primary: rgba(230, 57, 70, 0.12);
   --halo-secondary: rgba(244, 131, 31, 0.1);
-  --hero-dot: rgba(0, 0, 0, 0.055);
+  --hero-dot: rgba(0, 0, 0, 0.22);
+  --hero-fade-end: 90%;
   --hero-ticker-bg: rgba(255, 255, 255, 0.7);
   --surface-sheen: rgba(0, 0, 0, 0.045);
   --surface-sheen-strong: rgba(0, 0, 0, 0.04);
@@ -806,7 +809,7 @@ nav a:hover::after, nav a.active::after {
 #hero::after {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse 85% 75% at 50% 50%, transparent 15%, var(--bg-main) 80%);
+  background: radial-gradient(ellipse 85% 75% at 50% 50%, transparent 15%, var(--bg-main) var(--hero-fade-end, 80%));
   pointer-events: none;
   z-index: 1;
 }
