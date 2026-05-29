@@ -50,8 +50,8 @@
   --font-body: 'Karla', sans-serif;
 
   --radius-xxs: 2px;
-  --radius-sm: 7px;  /* mobile button radius */
-  --radius-md: 8px;  /* desktop button radius (see --radius-button override at 640px) */
+  --radius-sm: 7px;
+  --radius-md: 8px;
   --radius-lg: 10px;
   --radius-xl: 12px;
   --radius-2xl: 16px;
@@ -87,9 +87,7 @@
   --contact-intrinsic-size: 760px;
 }
 
-/* LIGHT THEME — system preference (no stored choice).
-   JS removes [data-theme] in this case, so the CSS media query drives theming.
-   Keep every token below in sync with :root[data-theme="light"] further down. */
+/* LIGHT THEME — system preference */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
     color-scheme: light;
@@ -144,8 +142,7 @@
   }
 }
 
-/* LIGHT THEME — manual toggle ([data-theme="light"] set by JS).
-   Keep every token below in sync with the @media block above. */
+/* LIGHT THEME — manual toggle */
 :root[data-theme="light"] {
   color-scheme: light;
   --bg-main: #f6f2ed;
@@ -258,13 +255,13 @@ body.nav-open {
   touch-action: none;
 }
 
+/* FIX 1: removed backdrop-filter — overlay is opaque enough at both
+   light (0.25) and dark (0.6) alpha; the blur was invisible but costly. */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
   background: var(--overlay-bg);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 150;
@@ -314,6 +311,11 @@ body::before {
   z-index: 0;
   animation: halo-breathe 14s ease-in-out infinite alternate;
   will-change: opacity, transform;
+}
+
+/* FIX 3: pause halo animation when hero is offscreen or tab is hidden */
+body.halo-paused::before {
+  animation-play-state: paused;
 }
 
 @keyframes halo-breathe {
@@ -419,12 +421,8 @@ nav, section, footer {
   }
 }
 
-/* ─── 404 / error page ───────────────────────────────────────────────────────
-   These styles are NOT used by index.html. They belong to a separate
-   404.html (or equivalent). Consider moving them to a dedicated error.css.
-   ──────────────────────────────────────────────────────────────────────────── */
+/* ─── 404 / error page ─────────────────────────────────────────────────────── */
 
-/* 404 page */
 .error-page-main {
   min-height: calc(var(--stable-vh) - var(--nav-h));
   display: flex;
@@ -611,6 +609,8 @@ nav {
   justify-content: space-between;
   align-items: center;
   background: var(--bg-nav);
+  /* FIX 1: this is the single backdrop-filter kept — nav frosted glass is the
+     only one doing visible work; ticker and overlay versions are removed. */
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
@@ -656,8 +656,8 @@ nav a::after {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-nav a:hover, nav a.active { 
-  color: var(--text-primary); 
+nav a:hover, nav a.active {
+  color: var(--text-primary);
 }
 
 nav a:hover::after, nav a.active::after {
@@ -782,7 +782,7 @@ nav a:hover::after, nav a.active::after {
 
 #hero {
   position: relative;
-  overflow: clip; 
+  overflow: clip;
   min-height: calc(var(--stable-vh) - var(--nav-h));
   display: flex;
   flex-direction: column;
@@ -960,6 +960,8 @@ nav a:hover::after, nav a.active::after {
 
 .hero-badge:hover .hero-badge-ring { animation-play-state: paused; }
 
+/* FIX 1: removed backdrop-filter: blur(10px) — the ticker sits over an opaque
+   hero background so the blur has no visible effect but creates a compositor layer. */
 .hero-ticker {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -969,8 +971,6 @@ nav a:hover::after, nav a.active::after {
   overflow: hidden;
   border-top: 1px solid var(--border-subtle);
   background: var(--hero-ticker-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   z-index: 5;
   opacity: 0;
   animation: hero-fade-in 0.6s ease 1.7s forwards;
@@ -1551,8 +1551,6 @@ footer {
 
   body::after {
     background: var(--overlay-bg-strong);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
   }
 
   .nav-toggle { display: flex; }
@@ -1598,7 +1596,7 @@ footer {
   }
 
   .nav-menu li:last-child { border-bottom: none; }
-  
+
   .nav-menu a {
     display: flex;
     align-items: center;
@@ -1634,7 +1632,7 @@ footer {
   }
 
   .nav-menu a::after { display: none; }
-  
+
   .skills-carousel { --carousel-card-width: clamp(190px, 74vw, 240px); --carousel-gap: 10px; }
   .error-card { padding: 36px 24px; }
   .error-actions { flex-direction: column; }
@@ -1668,10 +1666,10 @@ footer {
   .projects-grid { grid-template-columns: 1fr; gap: 16px; }
   #hero { min-height: calc(var(--stable-vh) - var(--nav-h)); justify-content: center; }
   #hero p.subtitle, .contact-sub { max-width: 380px; }
-  
+
   .hero-badge { width: 90px; height: 90px; bottom: calc(40px + 28px); }
   .hero-badge-arrow { font-size: 20px; }
-  
+
   .btn { padding: 13px 32px; font-size: 14px; }
 
   nav .logo { font-size: 20px; }
@@ -1693,7 +1691,7 @@ footer {
   }
 
   #hero { flex-direction: column; text-align: left; align-items: flex-start; justify-content: center; min-height: calc(var(--stable-vh) - var(--nav-h)); }
-  
+
   .dict-block { margin-bottom: 42px; max-width: 500px; }
   .dict-word { font-size: 28px; }
   .dict-phonetic { font-size: 16px; }
@@ -1702,20 +1700,20 @@ footer {
   .hero-badge { width: 96px; height: 96px; bottom: calc(40px + 30px); }
   .hero-badge-arrow { font-size: 22px; }
   #hero h1 { letter-spacing: -4px; margin-bottom: 20px; }
-  
+
   #hero p.subtitle { max-width: 420px; font-size: 18px; margin: 0 0 32px; }
   .btn { padding: 14px 40px; font-size: 15px; }
-  
+
   #about { gap: 80px; }
   #about img { width: 260px; height: 260px; }
-  
+
   .skills-carousel { --carousel-card-width: clamp(220px, 28vw, 280px); --carousel-gap: 14px; }
   .skill-card { padding: 24px 20px; gap: 14px; }
   .skill-icon { width: 30px; height: 30px; }
-  
+
   .projects-grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
   .project-preview { height: 150px; }
-  
+
   .contact-grid { grid-template-columns: 1.1fr 1fr; gap: 22px; }
   .contact-sub { max-width: 600px; font-size: 18px; }
   .footer-grid {
@@ -1723,7 +1721,7 @@ footer {
     align-items: start;
     gap: 22px;
   }
-  
+
   nav .logo { font-size: 22px; }
   nav a { font-size: 16px; }
   .nav-menu { gap: 40px; }
@@ -1756,7 +1754,11 @@ footer {
   will-change: transform;
 }
 
+/* Pause grain while the page is scrolling */
 body.is-scrolling .grain-overlay { animation-play-state: paused; }
+
+/* FIX 3: pause grain when tab is hidden (set by JS visibilitychange handler) */
+.grain-overlay.hidden-tab { animation-play-state: paused; }
 
 @keyframes grain-shift {
   0%   { transform: translate(0px, 0px); }
