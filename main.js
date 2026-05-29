@@ -396,11 +396,18 @@ function subscribeToScroll(handler) {
   grain.className = 'grain-overlay';
   document.body.appendChild(grain);
 
+  // Pause during scroll (existing behaviour — driven by body.is-scrolling in CSS)
   let scrollPauseTimer;
   window.addEventListener('scroll', () => {
     document.body.classList.add('is-scrolling');
     clearTimeout(scrollPauseTimer);
     scrollPauseTimer = setTimeout(() => document.body.classList.remove('is-scrolling'), 150);
+  }, { passive: true });
+
+  // FIX 3: pause when the tab is hidden — grain is position:fixed so it can't
+  // be observed with IntersectionObserver; visibilitychange is the right hook.
+  document.addEventListener('visibilitychange', () => {
+    grain.classList.toggle('hidden-tab', document.hidden);
   }, { passive: true });
 })();
 
@@ -425,6 +432,29 @@ function subscribeToScroll(handler) {
   document.addEventListener('visibilitychange', updateTickerState, { passive: true });
   window.addEventListener('pagehide', () => observer.disconnect(), { once: true });
   updateTickerState();
+})();
+
+// FIX 3: Pause body::before halo animation when hero is offscreen or tab is hidden.
+// The halo is a fixed pseudo-element, so we observe #hero as a proxy — when the
+// hero has scrolled fully out of view the halo is no longer the focus and can rest.
+(() => {
+  const hero = document.getElementById('hero');
+  if (!hero || typeof IntersectionObserver !== 'function') return;
+
+  let isHeroVisible = true;
+
+  function updateHaloState() {
+    document.body.classList.toggle('halo-paused', !isHeroVisible || document.hidden);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    isHeroVisible = entries[0]?.isIntersecting ?? true;
+    updateHaloState();
+  }, { threshold: 0 }); // fires as soon as the last hero pixel leaves the viewport
+
+  observer.observe(hero);
+  document.addEventListener('visibilitychange', updateHaloState, { passive: true });
+  window.addEventListener('pagehide', () => observer.disconnect(), { once: true });
 })();
 
 // Cursor Glow & Desktop Hover Effects
@@ -491,8 +521,8 @@ function subscribeToScroll(handler) {
       const r = card.getBoundingClientRect();
       const nx = (e.clientX - r.left) / r.width - 0.5;
       const ny = (e.clientY - r.top) / r.height - 0.5;
-      targetX = -ny * MAX_DEG; 
-      targetY = nx * MAX_DEG; 
+      targetX = -ny * MAX_DEG;
+      targetY = nx * MAX_DEG;
       hovering = true;
       if (!rafId) rafId = requestAnimationFrame(tick);
     });
@@ -510,7 +540,7 @@ function subscribeToScroll(handler) {
 (() => {
   const simpleReveal = [
     '#about img', '.about-text h2', '.about-text p',
-    '#skills h2', '#projects h2', '#contact h2', 
+    '#skills h2', '#projects h2', '#contact h2',
     '.contact-sub', '.contact-grid',
   ];
 
@@ -649,26 +679,45 @@ function subscribeToScroll(handler) {
     setOffset(allowMotion ? offset : 0);
   }
 
+  // FIX 4: shouldRun() centralises the three conditions that control whether
+  // the loop may schedule its next frame. Previously these were only checked
+  // inside tick() to decide whether to move, but the rAF reschedule was
+  // unconditional — so the loop kept running even when nothing was visible.
+  function shouldRun() {
+    return allowMotion && isVisible && !document.hidden;
+  }
+
+  // FIX 4: tick() now self-terminates by setting rafId = null and NOT calling
+  // requestAnimationFrame when shouldRun() is false. stopTick() is still used
+  // for imperative cancellations (resize, motion-preference change). startTick()
+  // guards against double-scheduling and respects shouldRun() before starting.
   function tick(time) {
     if (!lastTime) lastTime = time;
     const delta = (time - lastTime) / 1000;
     lastTime = time;
 
-    if (allowMotion && isVisible && !document.hidden && !isPaused && !isDragging && baseWidth) {
+    // Only move when fully cleared — allowMotion check kept here as a defensive
+    // guard against a race where tick() is called just after allowMotion flips.
+    if (allowMotion && !isPaused && !isDragging && baseWidth) {
       setOffset(offset - delta * SCROLL_SPEED_PX_PER_SEC);
     }
 
-    rafId = requestAnimationFrame(tick);
+    if (shouldRun()) {
+      rafId = requestAnimationFrame(tick);
+    } else {
+      rafId = null; // loop stops; call startTick() to resume
+    }
   }
 
   function stopTick() {
     if (!rafId) return;
     cancelAnimationFrame(rafId);
     rafId = null;
+    lastTime = 0; // reset so delta doesn't spike on the first frame after resume
   }
 
   function startTick() {
-    if (rafId) return;
+    if (rafId || !shouldRun()) return; // no double-scheduling; no spurious starts
     lastTime = 0;
     rafId = requestAnimationFrame(tick);
   }
@@ -682,7 +731,7 @@ function subscribeToScroll(handler) {
     stopTick();
     updateMotionState();
     setupCarousel();
-    if (allowMotion && isVisible && !document.hidden) startTick();
+    startTick(); // startTick() checks shouldRun() internally
   }
 
   function handlePointerDown(e) {
@@ -743,7 +792,8 @@ function subscribeToScroll(handler) {
     const entry = entries[0];
     if (!entry) return;
     isVisible = entry.isIntersecting;
-    if (allowMotion && isVisible && !document.hidden) {
+    // FIX 4: use shouldRun() consistently instead of repeating the three-way check
+    if (shouldRun()) {
       startTick();
     } else {
       stopTick();
@@ -752,7 +802,8 @@ function subscribeToScroll(handler) {
   visibilityObserver.observe(carousel);
 
   document.addEventListener('visibilitychange', () => {
-    if (allowMotion && isVisible && !document.hidden) {
+    // FIX 4: same — shouldRun() now owns this logic
+    if (shouldRun()) {
       startTick();
     } else {
       stopTick();
