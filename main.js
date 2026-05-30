@@ -237,7 +237,7 @@ function subscribeToScroll(handler) {
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.querySelector('.nav-menu');
   const nav = document.querySelector('nav');
-  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  const navLinks = document.querySelectorAll('a[href^="#"]');
   const toggleLabel = toggle?.querySelector('.nav-toggle-label');
   const prefersReducedMotion = prefersReducedMotionMQL;
 
